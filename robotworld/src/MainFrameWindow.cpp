@@ -679,7 +679,8 @@ namespace Application
 			}
 			case 1:
 			{
-				TRACE_DEVELOP("Please create your own student world 1");
+//				TRACE_DEVELOP("Please create your own student world 1");
+				robotWorldCanvas->populate( 8);
 				break;
 			}
 			case 2:
