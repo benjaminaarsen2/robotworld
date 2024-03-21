@@ -573,7 +573,7 @@ namespace Application
 	 */
 	void MainFrameWindow::OnDrawOpenSet( wxCommandEvent& UNUSEDPARAM(anEvent))
 	{
-//		Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot( "Robot");
+//		Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot( "Butter");
 //		if (robot)
 //		{
 //			robotWorldCanvas->selectShapeAt(robot->getPosition());
@@ -594,7 +594,7 @@ namespace Application
 	void MainFrameWindow::OnSpeedSpinCtrlUpdate( wxCommandEvent& UNUSEDPARAM(anEvent))
 	{
 //		TRACE_DEVELOP(anEvent.GetString().ToStdString());
-//		Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot( "Robot");
+//		Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot( "Butter");
 //		if (robot)
 //		{
 //			robot->setSpeed(static_cast<float>(speedSpinCtrl->GetValue()));
@@ -638,7 +638,7 @@ namespace Application
 	 */
 	void MainFrameWindow::OnStartRobot( wxCommandEvent& UNUSEDPARAM(anEvent))
 	{
-		Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot( "Robot");
+		Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot( "Butter");
 		if (robot && !robot->isActing())
 		{
 			robot->startActing();
@@ -649,7 +649,7 @@ namespace Application
 	 */
 	void MainFrameWindow::OnStopRobot( wxCommandEvent& UNUSEDPARAM(anEvent))
 	{
-		Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot( "Robot");
+		Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot( "Butter");
 		if (robot && robot->isActing())
 		{
 			robot->stopActing();
@@ -709,7 +709,7 @@ namespace Application
 	 */
 	void MainFrameWindow::OnStartListening( wxCommandEvent& UNUSEDPARAM(anEvent))
 	{
-		Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot( "Robot");
+		Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot( "Butter");
 		if (robot)
 		{
 			robot->startCommunicating();
@@ -720,7 +720,7 @@ namespace Application
 	 */
 	void MainFrameWindow::OnSendMessage( wxCommandEvent& UNUSEDPARAM(anEvent))
 	{
-		Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot( "Robot");
+		Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot( "Butter");
 		if (robot)
 		{
 			std::string remoteIpAdres = "localhost";
@@ -749,7 +749,7 @@ namespace Application
 	 */
 	void MainFrameWindow::OnStopListening( wxCommandEvent& UNUSEDPARAM(anEvent))
 	{
-		Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot( "Robot");
+		Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot( "Butter");
 		if (robot)
 		{
 			robot->stopCommunicating();
