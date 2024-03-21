@@ -173,7 +173,6 @@ namespace Model
 	void Robot::startDriving()
 	{
 		driving = true;
-
 		goal = RobotWorld::getRobotWorld().getGoal( "Goal");
 		calculateRoute(goal);
 
@@ -432,6 +431,8 @@ namespace Model
 				setSpeed(10.0, false); // @suppress("Avoid magic numbers")
 			}
 
+			Application::Logger::log(__PRETTY_FUNCTION__ + std::string(": Drive the MF to goal"));
+
 			// We use the real position for starters, not an estimated position.
 			startPosition = position;
 
@@ -445,9 +446,12 @@ namespace Model
 				position.y = vertex.y;
 
 				// Stop on arrival or collision
-				if (arrived(goal) || collision())
+				if (arrived(goal))
 				{
-					Application::Logger::log(__PRETTY_FUNCTION__ + std::string(": arrived or collision"));
+					Application::Logger::log(__PRETTY_FUNCTION__ + std::string(": arrived"));
+					driving = false;
+				} else if (collision()) {
+					Application::Logger::log(__PRETTY_FUNCTION__ + std::string(": Robot has fucking died"));
 					driving = false;
 				}
 

@@ -441,9 +441,9 @@ namespace View
 	/**
 	 *
 	 */
-	void RobotWorldCanvas::populate( int aNumberOfWalls /*= 2*/)
+	void RobotWorldCanvas::populate( unsigned short worldNumber /*= 2*/) // changed the nrOfWalls with a worldnumber selection :)
 	{
-		Model::RobotWorld::getRobotWorld().populate(aNumberOfWalls);
+		Model::RobotWorld::getRobotWorld().populate(worldNumber);
 	}
 	/**
 	 *
