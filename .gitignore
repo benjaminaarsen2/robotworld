@@ -1,3 +1,6 @@
 /*
 !/src
 src/*.in
+src/.cproject
+src/.project
+src/.settings/language.settings.xml
