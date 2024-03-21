@@ -276,7 +276,8 @@ namespace Model
 	 */
 	void RobotWorld::populate( int UNUSEDPARAM(aNumberOfWalls))
 	{
-		RobotWorld::getRobotWorld().newRobot( "Robot", wxPoint(40,40),false); // @suppress("Avoid magic numbers")
+//		RobotWorld::getRobotWorld().newRobot( "Robot", wxPoint(40,40),false); // @suppress("Avoid magic numbers")
+		RobotWorld::getRobotWorld().newRobot( "Robot", wxPoint(460,460),false); // @suppress("Avoid magic numbers")
 
 //		static const wxPoint coordinates[] = {
 //			wxPoint( 100, 25), wxPoint( 700, 25),
@@ -300,7 +301,8 @@ namespace Model
 //		RobotWorld::getRobotWorld().newWall( wxPoint(419,400), wxPoint(200,400) ,false); // @suppress("Avoid magic numbers")
 //		RobotWorld::getRobotWorld().newWall( wxPoint(200,300), wxPoint(200,400) ,false); // @suppress("Avoid magic numbers")
 
-		RobotWorld::getRobotWorld().newGoal( "Goal", wxPoint(460,460),false); // @suppress("Avoid magic numbers")
+//		RobotWorld::getRobotWorld().newGoal( "Goal", wxPoint(460,460),false); // @suppress("Avoid magic numbers")
+		RobotWorld::getRobotWorld().newGoal( "Goal", wxPoint(40,40),false); // @suppress("Avoid magic numbers")
 		
 
 		notifyObservers();
