@@ -1,6 +1,3 @@
-/.metadata/
-/*/Debug
-/*/.settings/language.settings.xml
-/LeastSlackAlgorithm2
-LeastSlackAlgorithm/.settings/language.settings.xml
-craps_game/.settings/org.eclipse.core.resources.prefs
+/*
+!/src
+src/*.in
