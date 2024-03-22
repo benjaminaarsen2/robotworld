@@ -426,7 +426,6 @@ namespace Model
 				butterTheSecond->setFront(b);
 
 				Application::Logger::log(aMessage.getBody());
-				this->askForLocation();
 				break;
 			}
 			default:
@@ -493,6 +492,7 @@ namespace Model
 				os << " and at y: " << position.y;
 
 				Application::Logger::log(os.str());
+				this->askForLocation();
 				// Stop on arrival or collision
 				if (arrived(goal))
 				{
