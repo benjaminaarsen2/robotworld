@@ -433,6 +433,17 @@ namespace Model
 			}
 			case Messaging::RobotLocationResponse:
 			{
+				std::stringstream is(aMessage.getBody());
+				int x, y;
+				is >> x >> y;
+
+				RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("ButterTheSecond");
+				if(!butterTheSecond) {
+					Model::RobotWorld::getRobotWorld().newRobot("ButterTheSecond", wxPoint(x, y));
+					butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("ButterTheSecond");
+				}
+				butterTheSecond->setPosition(wxPoint(x, y));
+
 				Application::Logger::log(aMessage.getBody());
 				break;
 			}
