@@ -174,6 +174,15 @@ namespace Model
 			mutable std::vector< WayPointPtr > wayPoints;
 			mutable std::vector< GoalPtr > goals;
 			mutable std::vector< WallPtr > walls;
+			// made the world generation functions private for reasons.
+			void generateWorld1();
+			void generateWorld2();
+			void generateWorld3();
+			void generateWorld4();
+			void generateWorld5();
+			void generateWorld6();
+			void generateWorld7();
+			void generateWorld8();
 	};
 } // namespace Model
 #endif // ROBOTWORLD_HPP_

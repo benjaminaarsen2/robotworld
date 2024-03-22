@@ -100,9 +100,21 @@ namespace Application
 
 			void OnDrawOpenSet( wxCommandEvent& anEvent);
 			void OnSpeedSpinCtrlUpdate( wxCommandEvent& anEvent);
+			// world one and two are for situation 1
 			void OnWorld1( wxCommandEvent& anEvent);
 			void OnWorld2( wxCommandEvent& anEvent);
+
+			// world three and four are for situation 2
 			void OnWorld3( wxCommandEvent& anEvent);
+			void OnWorld4( wxCommandEvent& anEvent);
+
+			// world five and six are for situation 3
+			void OnWorld5( wxCommandEvent& anEvent);
+			void OnWorld6( wxCommandEvent& anEvent);
+
+			// world seven and eight are for "should" situation 4
+			void OnWorld7( wxCommandEvent& anEvent);
+			void OnWorld8( wxCommandEvent& anEvent);
 
 			void OnStartRobot( wxCommandEvent& anEvent);
 			void OnStopRobot( wxCommandEvent& anEvent);

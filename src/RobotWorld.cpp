@@ -246,38 +246,28 @@ const std::vector<WallPtr>& RobotWorld::getWalls() const {
 void RobotWorld::populate(unsigned short worldNumber) {
 	switch (worldNumber) {
 	case 0:
-		Application::Logger::log(
-				__PRETTY_FUNCTION__ + std::string(": selected world 0"));
-		RobotWorld::getRobotWorld().newRobot("Robot", wxPoint(460, 460), false); // @suppress("Avoid magic numbers")
-		RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(0, 500),
-				false); // @suppress("Avoid magic numbers")
-		RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(500, 0),
-				false); // @suppress("Avoid magic numbers")
-		RobotWorld::getRobotWorld().newWall(wxPoint(500, 0), wxPoint(500, 500),
-				false); // @suppress("Avoid magic numbers")
-		RobotWorld::getRobotWorld().newWall(wxPoint(0, 500), wxPoint(500, 500),
-				false); // @suppress("Avoid magic numbers")
-
-		RobotWorld::getRobotWorld().newGoal("Goal", wxPoint(40, 40), false); // @suppress("Avoid magic numbers")
+		generateWorld1();
 		break;
 	case 1:
-		Application::Logger::log(
-				__PRETTY_FUNCTION__ + std::string(": selected world 1"));
-		RobotWorld::getRobotWorld().newRobot("Robot", wxPoint(40, 40), false); // @suppress("Avoid magic numbers")
-		RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(0, 500),
-				false); // @suppress("Avoid magic numbers")
-		RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(500, 0),
-				false); // @suppress("Avoid magic numbers")
-		RobotWorld::getRobotWorld().newWall(wxPoint(500, 0), wxPoint(500, 500),
-				false); // @suppress("Avoid magic numbers")
-		RobotWorld::getRobotWorld().newWall(wxPoint(0, 500), wxPoint(500, 500),
-				false); // @suppress("Avoid magic numbers")
-
-		RobotWorld::getRobotWorld().newGoal("Goal", wxPoint(460, 460), false); // @suppress("Avoid magic numbers")
+		generateWorld2();
 		break;
 	case 2:
-		Application::Logger::log(
-				__PRETTY_FUNCTION__ + std::string(": selected world 2"));
+		generateWorld3();
+		break;
+	case 3:
+		generateWorld4();
+		break;
+	case 4:
+		generateWorld5();
+		break;
+	case 5:
+		generateWorld6();
+		break;
+	case 6:
+		generateWorld7();
+		break;
+	case 7:
+		generateWorld8();
 		break;
 	default:
 		Application::Logger::log(
@@ -301,6 +291,155 @@ void RobotWorld::populate(unsigned short worldNumber) {
 
 	notifyObservers();
 }
+/**
+ * I put these here for more "overzicht"
+ */
+void RobotWorld::generateWorld1() {
+	Application::Logger::log(
+			__PRETTY_FUNCTION__ + std::string(": selected world 1"));
+	RobotWorld::getRobotWorld().newRobot("Robot", wxPoint(460, 460), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(0, 500), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(500, 0), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(500, 0), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 500), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newGoal("Goal", wxPoint(40, 40), false); // @suppress("Avoid magic numbers")
+
+}
+
+void RobotWorld::generateWorld2() {
+	Application::Logger::log(
+			__PRETTY_FUNCTION__ + std::string(": selected world 2"));
+	RobotWorld::getRobotWorld().newRobot("Robot", wxPoint(40, 40), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(0, 500), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(500, 0), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(500, 0), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 500), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newGoal("Goal", wxPoint(460, 460), false); // @suppress("Avoid magic numbers")
+
+}
+
+void RobotWorld::generateWorld3() {
+	Application::Logger::log(
+			__PRETTY_FUNCTION__ + std::string(": selected world 3"));
+	RobotWorld::getRobotWorld().newRobot("Robot", wxPoint(40, 40), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(0, 500), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(500, 0), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(500, 0), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 500), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newGoal("Goal", wxPoint(460, 460), false); // @suppress("Avoid magic numbers")
+
+}
+
+void RobotWorld::generateWorld4() {
+	Application::Logger::log(
+			__PRETTY_FUNCTION__ + std::string(": selected world 4"));
+
+	RobotWorld::getRobotWorld().newRobot("Robot", wxPoint(460, 40), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(0, 500), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(500, 0), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(500, 0), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 500), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newGoal("Goal", wxPoint(40, 460), false); // @suppress("Avoid magic numbers")
+
+}
+
+void RobotWorld::generateWorld5() {
+	Application::Logger::log(
+			__PRETTY_FUNCTION__ + std::string(": selected world 5"));
+	RobotWorld::getRobotWorld().newRobot("Robot", wxPoint(460, 460), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(0, 500), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(500, 0), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(500, 0), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 500), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 150), wxPoint(400, 150),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newWall(wxPoint(500, 350), wxPoint(100, 350),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newGoal("Goal", wxPoint(40, 40), false); // @suppress("Avoid magic numbers")
+
+}
+
+void RobotWorld::generateWorld6() {
+	Application::Logger::log(
+			__PRETTY_FUNCTION__ + std::string(": selected world 6"));
+	RobotWorld::getRobotWorld().newRobot("Robot", wxPoint(40, 40), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(0, 500), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(500, 0), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(500, 0), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 500), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 150), wxPoint(400, 150),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newWall(wxPoint(500, 350), wxPoint(100, 350),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newGoal("Goal", wxPoint(460, 460), false); // @suppress("Avoid magic numbers")
+
+}
+
+void RobotWorld::generateWorld7() {
+	Application::Logger::log(
+			__PRETTY_FUNCTION__ + std::string(": selected world 7"));
+
+	RobotWorld::getRobotWorld().newRobot("Robot", wxPoint(460, 460), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(0, 500), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(500, 0), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(500, 0), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 500), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 225), wxPoint(400, 225),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newWall(wxPoint(500, 275), wxPoint(100, 275),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newGoal("Goal", wxPoint(40, 40), false); // @suppress("Avoid magic numbers")
+
+}
+
+void RobotWorld::generateWorld8() {
+	Application::Logger::log(
+			__PRETTY_FUNCTION__ + std::string(": selected world 8"));
+	RobotWorld::getRobotWorld().newRobot("Robot", wxPoint(40, 40), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(0, 500), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 0), wxPoint(500, 0), false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(500, 0), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 500), wxPoint(500, 500),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 225), wxPoint(400, 225),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newWall(wxPoint(500, 275), wxPoint(100, 275),
+			false); // @suppress("Avoid magic numbers")
+
+	RobotWorld::getRobotWorld().newGoal("Goal", wxPoint(460, 460), false); // @suppress("Avoid magic numbers")
+
+}
+
 /**
  *
  */
