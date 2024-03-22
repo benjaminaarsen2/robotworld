@@ -20,7 +20,15 @@ namespace Messaging
 		GenericRequest,
 		GenericResponse,
 		EchoRequest,
-		EchoResponse
+		EchoResponse,
+		MergeRequest,
+		MergeResponse,
+		// yo boy where are you
+		RobotLocationRequest,
+		RobotLocationResponse,
+		// move bitch get out the way
+		OtherRobotOnPathRequest,
+		OtherRobotOnPathResponse
 	};
 	//@}
 } /* namespace Messaging */
