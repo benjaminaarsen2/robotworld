@@ -872,7 +872,7 @@ namespace View
 	 */
 	void RobotWorldCanvas::handleAddRobot( wxCommandEvent& UNUSEDPARAM(event))
 	{
-		RobotShapePtr robot = std::make_shared<RobotShape>( Model::RobotWorld::getRobotWorld().newRobot( "Robot", popupPoint));
+		RobotShapePtr robot = std::make_shared<RobotShape>( Model::RobotWorld::getRobotWorld().newRobot( "Butter", popupPoint));
 		addShape(robot);
 		Refresh();
 	}
