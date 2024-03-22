@@ -399,8 +399,11 @@ wxPanel* MainFrameWindow::initialiseButtonPanel() {
 	sizer->Add(makeButton(panel, "Unpopulate", [this](wxCommandEvent &anEvent) {
 		this->OnUnpopulate(anEvent);
 	}),
+	
 	wxGBPosition(1, 2), wxGBSpan(1, 1), wxGROW);
-
+sizer->Add(makeButton(panel, "Sync worlds", [this](wxCommandEvent &anEvent) {
+		this->OnSyncWorlds(anEvent);
+	}), wxGBPosition(1, 3), wxGBSpan(1, 1), wxGROW);
 	sizer->Add(
 			makeButton(panel, "Start robot", [this](wxCommandEvent &anEvent) {
 				this->OnStartRobot(anEvent);
@@ -683,6 +686,13 @@ void MainFrameWindow::OnUnpopulate(wxCommandEvent&UNUSEDPARAM(anEvent)) {
 	robotWorldCanvas->unpopulate();
 
 	logTextCtrl->Clear();
+}
+
+void MainFrameWindow::OnSyncWorlds(wxCommandEvent&UNUSEDPARAM(anEvent)) {
+	//sync the worlds 
+	std::ostringstream os;
+	os << __PRETTY_FUNCTION__ << " syncing worlds" << std::endl;
+	Logger::log(os.str());
 }
 /**
  *
