@@ -362,9 +362,18 @@ namespace Model
 			}
 			case Messaging::MergeRequest:
 			{
-				aMessage.setMessageType(Messaging::EchoResponse);
+				aMessage.setMessageType(Messaging::MergeResponse);
 				aMessage.setBody( "Let's do some merging: " + aMessage.asString());
 				RobotWorld::getRobotWorld().merge();
+				break;
+			}
+			case Messaging::RobotLocationRequest:
+			{
+				aMessage.setMessageType(Messaging::RobotLocationResponse);
+
+				std::ostringstream os;
+				os << position.x << " " << position.y;
+				aMessage.setBody( os.str());
 				break;
 			}
 			default:
@@ -451,7 +460,11 @@ namespace Model
 				front = BoundedVector( vertex.asPoint(), position);
 				position.x = vertex.x;
 				position.y = vertex.y;
+				std::ostringstream os;
+				os << "butter is at x: " << position.x;
+				os << " and at y: " << position.y;
 
+				Application::Logger::log(os.str());
 				// Stop on arrival or collision
 				if (arrived(goal))
 				{
