@@ -372,7 +372,7 @@ namespace Model
 				aMessage.setMessageType(Messaging::RobotLocationResponse);
 
 				std::ostringstream os;
-				os << position.x << " " << position.y;
+				os << position.x << " " << position.y << " " << getFront().asString();
 				aMessage.setBody( os.str());
 				break;
 			}
