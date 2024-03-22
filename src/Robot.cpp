@@ -434,15 +434,19 @@ namespace Model
 			case Messaging::RobotLocationResponse:
 			{
 				std::stringstream is(aMessage.getBody());
-				int x, y;
-				is >> x >> y;
+				unsigned short x, y, bvx, bvy;
+				is >> x >> y >> bvx >> bvy;
 
 				RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("ButterTheSecond");
 				if(!butterTheSecond) {
 					Model::RobotWorld::getRobotWorld().newRobot("ButterTheSecond", wxPoint(x, y));
 					butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("ButterTheSecond");
 				}
+
 				butterTheSecond->setPosition(wxPoint(x, y));
+
+				BoundedVector b(bvx, bvy);
+				butterTheSecond->setFront(b);
 
 				Application::Logger::log(aMessage.getBody());
 				break;
