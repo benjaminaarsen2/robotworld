@@ -134,6 +134,10 @@ namespace Model
 			/**
 			 *
 			 */
+			void merge();
+			/**
+			 *
+			 */
 			std::string asCode() const;
 			/**
 			 *
