@@ -360,6 +360,13 @@ namespace Model
 				aMessage.setBody( "Messaging::EchoResponse: " + aMessage.asString());
 				break;
 			}
+			case Messaging::MergeRequest:
+			{
+				aMessage.setMessageType(Messaging::EchoResponse);
+				aMessage.setBody( "Let's do some merging: " + aMessage.asString());
+				RobotWorld::getRobotWorld().merge();
+				break;
+			}
 			default:
 			{
 				TRACE_DEVELOP(__PRETTY_FUNCTION__ + std::string(": default not implemented"));
