@@ -690,9 +690,28 @@ void MainFrameWindow::OnUnpopulate(wxCommandEvent&UNUSEDPARAM(anEvent)) {
 
 void MainFrameWindow::OnSyncWorlds(wxCommandEvent&UNUSEDPARAM(anEvent)) {
 	//sync the worlds 
+    Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot(
+			"Butter");
+
+    if (!robot) {
+        return;
+    }
+
 	std::ostringstream os;
 	os << __PRETTY_FUNCTION__ << " syncing worlds" << std::endl;
+    std::string remoteIpAdres = "localhost";
+		std::string remotePort = "12345";
+
+		if (MainApplication::isArgGiven("-remote_ip")) {
+			remoteIpAdres = MainApplication::getArg("-remote_ip").value;
+		}
+		if (MainApplication::isArgGiven("-remote_port")) {
+			remotePort = MainApplication::getArg("-remote_port").value;
+		}
+
 	Logger::log(os.str());
+    Messaging::Client client(remoteIpAdres, static_cast<unsigned short>(std::stoi(remotePort)), robot);
+    client.dispatchMessage(Messaging::Message(Messaging::MergeRequest, "Syncing worlds"));
 }
 /**
  *
@@ -716,6 +735,7 @@ void MainFrameWindow::OnSendMessage(wxCommandEvent&UNUSEDPARAM(anEvent)) {
 
 		if (MainApplication::isArgGiven("-remote_ip")) {
 			remoteIpAdres = MainApplication::getArg("-remote_ip").value;
+            // Logger::log("remote ip: " + remoteIpAdres + "\n");
 		}
 		if (MainApplication::isArgGiven("-remote_port")) {
 			remotePort = MainApplication::getArg("-remote_port").value;
