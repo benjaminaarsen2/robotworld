@@ -326,6 +326,8 @@ namespace Model
 			 *
 			 */
 			Messaging::ServerPtr server;
+
+			void askForLocation();
 	};
 } // namespace Model
 #endif // ROBOT_HPP_

@@ -405,42 +405,19 @@ namespace Model
 			{
 				Application::Logger::log("fuck it we merge");
 
-				Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot(
-							"Butter");
-
-				if (!robot) {
-					break;
-				}
-
-				std::ostringstream os;
-				os << __PRETTY_FUNCTION__ << " asking for location" << std::endl;
-
-				std::string remoteIpAdres = "localhost";
-				std::string remotePort = "12345";
-
-				if (Application::MainApplication::isArgGiven("-remote_ip")) {
-					remoteIpAdres = Application::MainApplication::getArg("-remote_ip").value;
-					Application::Logger::log("oi");
-				}
-				if (Application::MainApplication::isArgGiven("-remote_port")) {
-					remotePort = Application::MainApplication::getArg("-remote_port").value;
-				}
-
-				Application::Logger::log(os.str());
-				Messaging::Client client(remoteIpAdres, static_cast<unsigned short>(std::stoi(remotePort)), robot);
-				client.dispatchMessage(Messaging::Message(Messaging::RobotLocationRequest, "Where are u"));
+				this->askForLocation();
 				break;
 			}
 			case Messaging::RobotLocationResponse:
 			{
 				std::stringstream is(aMessage.getBody());
-				unsigned short x, y, bvx, bvy;
+				signed short x, y, bvx, bvy;
 				is >> x >> y >> bvx >> bvy;
 
-				RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("ButterTheSecond");
+				RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("Bu22er");
 				if(!butterTheSecond) {
-					Model::RobotWorld::getRobotWorld().newRobot("ButterTheSecond", wxPoint(x, y));
-					butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("ButterTheSecond");
+					Model::RobotWorld::getRobotWorld().newRobot("Bu22er", wxPoint(x, y));
+					butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("Bu22er");
 				}
 
 				butterTheSecond->setPosition(wxPoint(x, y));
@@ -449,6 +426,7 @@ namespace Model
 				butterTheSecond->setFront(b);
 
 				Application::Logger::log(aMessage.getBody());
+				this->askForLocation();
 				break;
 			}
 			default:
@@ -612,5 +590,32 @@ namespace Model
 		}
 		return false;
 	}
+
+void Robot::askForLocation() {
+	Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot(
+								"Butter");
+
+	if (!robot) {
+		return;
+	}
+
+	std::ostringstream os;
+	os << __PRETTY_FUNCTION__ << " asking for location" << std::endl;
+
+	std::string remoteIpAdres = "localhost";
+	std::string remotePort = "12345";
+
+	if (Application::MainApplication::isArgGiven("-remote_ip")) {
+		remoteIpAdres = Application::MainApplication::getArg("-remote_ip").value;
+		Application::Logger::log("oi");
+	}
+	if (Application::MainApplication::isArgGiven("-remote_port")) {
+		remotePort = Application::MainApplication::getArg("-remote_port").value;
+	}
+
+	Application::Logger::log(os.str());
+	Messaging::Client client(remoteIpAdres, static_cast<unsigned short>(std::stoi(remotePort)), robot);
+	client.dispatchMessage(Messaging::Message(Messaging::RobotLocationRequest, "Where are u"));
+}
 
 } // namespace Model
