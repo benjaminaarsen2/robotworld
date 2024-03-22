@@ -401,6 +401,41 @@ namespace Model
 			{
 				break;
 			}
+			case Messaging::MergeResponse:
+			{
+				Application::Logger::log("fuck it we merge");
+
+				Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot(
+							"Butter");
+
+				if (!robot) {
+					break;
+				}
+
+				std::ostringstream os;
+				os << __PRETTY_FUNCTION__ << " asking for location" << std::endl;
+
+				std::string remoteIpAdres = "localhost";
+				std::string remotePort = "12345";
+
+				if (Application::MainApplication::isArgGiven("-remote_ip")) {
+					remoteIpAdres = Application::MainApplication::getArg("-remote_ip").value;
+					Application::Logger::log("oi");
+				}
+				if (Application::MainApplication::isArgGiven("-remote_port")) {
+					remotePort = Application::MainApplication::getArg("-remote_port").value;
+				}
+
+				Application::Logger::log(os.str());
+				Messaging::Client client(remoteIpAdres, static_cast<unsigned short>(std::stoi(remotePort)), robot);
+				client.dispatchMessage(Messaging::Message(Messaging::RobotLocationRequest, "Where are u"));
+				break;
+			}
+			case Messaging::RobotLocationResponse:
+			{
+				Application::Logger::log(aMessage.getBody());
+				break;
+			}
 			default:
 			{
 				TRACE_DEVELOP(__PRETTY_FUNCTION__ + std::string( ": default not implemented, ") + aMessage.asString());
