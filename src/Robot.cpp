@@ -414,10 +414,10 @@ namespace Model
 				signed short x, y, bvx, bvy;
 				is >> x >> y >> bvx >> bvy;
 
-				RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("Bu22er");
+				RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("Peanut");
 				if(!butterTheSecond) {
-					Model::RobotWorld::getRobotWorld().newRobot("Bu22er", wxPoint(x, y));
-					butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("Bu22er");
+					Model::RobotWorld::getRobotWorld().newRobot("Peanut", wxPoint(x, y));
+					butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("Peanut");
 				}
 
 				butterTheSecond->setPosition(wxPoint(x, y));
