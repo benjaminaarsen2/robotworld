@@ -190,7 +190,7 @@ void Robot::startCommunicating() {
 void Robot::stopCommunicating() {
 	if (communicating) {
 		communicating = false;
-
+		Messaging::CommunicationService::getCommunicationService().deregisterServer(server)
 		std::string localPort = "12345";
 		if (Application::MainApplication::isArgGiven("-local_port")) {
 			localPort =
