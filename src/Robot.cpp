@@ -495,8 +495,8 @@ namespace Model
 
 					Model::RobotWorld::getRobotWorld().newWayPoint(
 						"getOutTheWayPoint",
-						wxPoint(position.x + 100 * front.y,
-								position.y + 100 * front.x));
+						wxPoint(position.x + 50 * front.y,
+								position.y + 10 * front.x));
 
 					calculateRoute(Model::RobotWorld::getRobotWorld().getWayPoint("getOutTheWayPoint"));
 					pathPoint = 0;
@@ -509,6 +509,14 @@ namespace Model
 				{
 					Application::Logger::log(__PRETTY_FUNCTION__ + std::string(": arrived"));
 					driving = false;
+				} else if (arrived(Model::RobotWorld::getRobotWorld().getWayPoint("getOutTheWayPoint")))
+				{
+					Application::Logger::log(__PRETTY_FUNCTION__ + std::string(": arrived at waypoint"));
+					driving = false;
+
+					calculateRoute(goal);
+
+					driving = true;
 				} else if (collision()) {
 					Application::Logger::log(__PRETTY_FUNCTION__ + std::string(": Robot has fucking died"));
 					driving = false;
@@ -579,6 +587,13 @@ namespace Model
 	{
 		if (aGoal && intersects( aGoal->getRegion()))
 		{
+			return true;
+		}
+		return false;
+	}
+
+	bool Robot::arrived(WayPointPtr aWaypoint) {
+		if (aWaypoint && intersects(aWaypoint->getRegion())) {
 			return true;
 		}
 		return false;

@@ -268,6 +268,7 @@ namespace Model
 			 *
 			 */
 			bool arrived( GoalPtr aGoal);
+			bool arrived( WayPointPtr aWaypoint);
 			/**
 			 *
 			 */
