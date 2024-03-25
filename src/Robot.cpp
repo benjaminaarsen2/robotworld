@@ -55,6 +55,8 @@ Robot::~Robot() {
 	}
 	if (communicating) {
 		stopCommunicating();
+		Application::Logger::log(
+				__PRETTY_FUNCTION__ + std::string(": stop communicating"));
 	}
 }
 /**
