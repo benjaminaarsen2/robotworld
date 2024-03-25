@@ -620,7 +620,7 @@ void Robot::updateOtherRobot(std::string otherMsgBody) {
 	BoundedVector b(bvx, bvy);
 	butterTheSecond->setFront(b);
 
-	Application::Logger::log(aMessage.getBody());
+	Application::Logger::log(otherMsgBody);
 }
 
 } // namespace Model
