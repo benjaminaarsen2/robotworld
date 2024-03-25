@@ -545,6 +545,22 @@ namespace Model
 			Application::Logger::setDisable( false);
 		}
 	}
+
+	void Robot::calculateRoute(WayPointPtr aWayPoint) {
+		path.clear();
+		if (aWayPoint)
+		{
+			// Turn off logging if not debugging AStar
+			Application::Logger::setDisable();
+
+			front = BoundedVector( aWayPoint->getPosition(), position);
+			//handleNotificationsFor( astar);
+			path = astar.search( position, aWayPoint->getPosition(), size);
+			//stopHandlingNotificationsFor( astar);
+
+			Application::Logger::setDisable( false);
+		}
+	}
 	/**
 	 *
 	 */

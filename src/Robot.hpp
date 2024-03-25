@@ -12,6 +12,7 @@
 #include "Point.hpp"
 #include "Region.hpp"
 #include "Size.hpp"
+#include "WayPoint.hpp"
 
 #include <iostream>
 #include <memory>
@@ -261,6 +262,8 @@ namespace Model
 			 *
 			 */
 			void calculateRoute( GoalPtr aGoal);
+
+			void calculateRoute( WayPointPtr aWayPoint);
 			/**
 			 *
 			 */
