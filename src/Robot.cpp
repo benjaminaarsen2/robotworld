@@ -463,6 +463,10 @@ void Robot::drive() {
 			os << " and at y: " << position.y;
 
 			Application::Logger::log(os.str());
+
+			WayPointPtr getOutOfMyWayPoint =
+					Model::RobotWorld::getRobotWorld().getWayPoint("WP");
+
 			if (merged) {
 				this->askForLocation();
 				if (this->otherRobotOnPath(pathPoint)) {
@@ -474,10 +478,6 @@ void Robot::drive() {
 							+ 40 * front.y);
 					signed short y = static_cast<signed short>(position.y
 							+ 0 * front.x);
-
-					WayPointPtr getOutOfMyWayPoint =
-							Model::RobotWorld::getRobotWorld().getWayPoint(
-									"WP");
 
 					if (!getOutOfMyWayPoint) {
 						Model::RobotWorld::getRobotWorld().newWayPoint("WP",
@@ -501,14 +501,13 @@ void Robot::drive() {
 				Application::Logger::log(
 						__PRETTY_FUNCTION__ + std::string(": arrived"));
 				driving = false;
-			} else if (Model::RobotWorld::getRobotWorld().getWayPoint("WP")
-					&& arrived(
-							Model::RobotWorld::getRobotWorld().getWayPoint(
-									"WP"))) {
+			} else if (getOutOfMyWayPoint && arrived(getOutOfMyWayPoint)) {
 				Application::Logger::log(
 						__PRETTY_FUNCTION__
 								+ std::string(": arrived at waypoint"));
 				driving = false;
+
+				Model::RobotWorld::getRobotWorld().deleteWayPoint(getOutOfMyWayPoint);
 
 				calculateRoute(goal);
 				pathPoint = 0;
