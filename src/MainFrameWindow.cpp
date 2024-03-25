@@ -628,6 +628,8 @@ void MainFrameWindow::OnStopRobot(wxCommandEvent&UNUSEDPARAM(anEvent)) {
  *
  */
 void MainFrameWindow::OnPopulate(wxCommandEvent&UNUSEDPARAM(anEvent)) {
+	// before we populate, make sure canvas is clean to prevent overlaying worlds
+	robotWorldCanvas->unpopulate();
 	switch (worldNumber->GetSelection()) {
 	case 0: {
 		robotWorldCanvas->populate(0);
@@ -717,9 +719,12 @@ void MainFrameWindow::OnSyncWorlds(wxCommandEvent&UNUSEDPARAM(anEvent)) {
  *
  */
 void MainFrameWindow::OnStartListening(wxCommandEvent&UNUSEDPARAM(anEvent)) {
+	Logger::log("retrieve the robot");
 	Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot(
 			"Butter");
+	Logger::log("we have the robot");
 	if (robot) {
+		Logger::log("start communicating");
 		robot->startCommunicating();
 	}
 }
