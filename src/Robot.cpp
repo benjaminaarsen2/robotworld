@@ -491,6 +491,17 @@ namespace Model
 				if(this->otherRobotOnPath(pathPoint)) {
 					Application::Logger::log(__PRETTY_FUNCTION__ + std::string(": fuck you in ma way"));
 					driving = false;
+
+
+					Model::RobotWorld::getRobotWorld().newWayPoint(
+						"getOutTheWayPoint",
+						wxPoint(position.x + 100 * front.x,
+								position.y + 100 * front.y));
+
+					calculateRoute(goal);
+					pathPoint = 0;
+
+					driving = true;
 				}
 
 				// Stop on arrival or collision
