@@ -684,6 +684,9 @@ bool Robot::otherRobotOnPath(unsigned short pathPoint) {
 	}
 	for (unsigned short vertexNr = pathPoint; vertexNr < pathPoint + 100;
 			vertexNr++) {
+		if(vertexNr >= path.size()) {
+			return false;
+		}
 
 		if (Utils::Shape2DUtils::intersect(butterTheSecond->getFrontLeft(),
 				butterTheSecond->getFrontRight(),
