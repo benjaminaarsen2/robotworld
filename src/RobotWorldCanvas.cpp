@@ -950,7 +950,7 @@ namespace View
 	 */
 	void RobotWorldCanvas::handleAddGoal( wxCommandEvent& UNUSEDPARAM(event))
 	{
-		GoalShapePtr goal = std::make_shared<GoalShape>( Model::RobotWorld::getRobotWorld().newGoal( "Goal", popupPoint));
+		GoalShapePtr goal = std::make_shared<GoalShape>( Model::RobotWorld::getRobotWorld().newGoal( "Peanut", popupPoint));
 		addShape(goal);
 		Refresh();
 	}

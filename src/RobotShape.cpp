@@ -41,7 +41,7 @@ namespace View
 	 */
 	void RobotShape::handleActivated()
 	{
-		Model::GoalPtr goal = Model::RobotWorld::getRobotWorld().getGoal( "Goal");
+		Model::GoalPtr goal = Model::RobotWorld::getRobotWorld().getGoal( "Peanut");
 		if (goal)
 		{
 			wxPoint goalPosition = goal->getPosition();

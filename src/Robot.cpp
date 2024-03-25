@@ -146,7 +146,7 @@ void Robot::stopActing() {
  */
 void Robot::startDriving() {
 	driving = true;
-	goal = RobotWorld::getRobotWorld().getGoal("Goal");
+	goal = RobotWorld::getRobotWorld().getGoal("Peanut");
 	calculateRoute(goal);
 
 	drive();
@@ -522,7 +522,7 @@ void Robot::drive() {
 						getOutOfMyWayPoint);
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
 				if (!goal) {
-					goal = Model::RobotWorld::getRobotWorld().getGoal("Goal");
+					goal = Model::RobotWorld::getRobotWorld().getGoal("Peanut");
 				}
 				calculateRoute(goal);
 				pathPoint = 0;
