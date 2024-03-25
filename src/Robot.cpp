@@ -498,7 +498,7 @@ namespace Model
 						wxPoint(position.x + 100 * front.x,
 								position.y + 100 * front.y));
 
-					calculateRoute(goal);
+					calculateRoute(Model::RobotWorld::getRobotWorld().getWayPoint("getOutTheWayPoint"));
 					pathPoint = 0;
 
 					driving = true;
