@@ -493,20 +493,20 @@ namespace Model
 					driving = false;
 
 				if (!Model::RobotWorld::getRobotWorld().getWayPoint(
-						"getOutTheWayPoint")) {
+						"WP")) {
 					Model::RobotWorld::getRobotWorld().newWayPoint(
-							"getOutTheWayPoint",
+							"WP",
 							wxPoint(position.x + 40 * front.y,
 									position.y + 0 * front.x));
 				} else {
 					Model::RobotWorld::getRobotWorld().getWayPoint(
-							"getOutTheWayPoint")->setPosition(
+							"WP")->setPosition(
 							wxPoint(position.x + 40 * front.y,
 									position.y + 0 * front.x));
 				}
 
 
-					calculateRoute(Model::RobotWorld::getRobotWorld().getWayPoint("getOutTheWayPoint"));
+					calculateRoute(Model::RobotWorld::getRobotWorld().getWayPoint("WP"));
 					pathPoint = 0;
 
 					driving = true;
@@ -518,10 +518,10 @@ namespace Model
 							__PRETTY_FUNCTION__ + std::string(": arrived"));
 					driving = false;
 				} else if (Model::RobotWorld::getRobotWorld().getWayPoint(
-						"getOutTheWayPoint")
+						"WP")
 						&& arrived(
 								Model::RobotWorld::getRobotWorld().getWayPoint(
-										"getOutTheWayPoint"))) {
+										"WP"))) {
 					Application::Logger::log(
 							__PRETTY_FUNCTION__
 									+ std::string(": arrived at waypoint"));
