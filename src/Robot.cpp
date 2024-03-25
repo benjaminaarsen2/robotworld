@@ -600,7 +600,11 @@ void Robot::askForLocation() {
 
 	Application::Logger::log(os.str());
 	Messaging::Client client(remoteIpAdres, static_cast<unsigned short>(std::stoi(remotePort)), robot);
-	client.dispatchMessage(Messaging::Message(Messaging::RobotLocationRequest, "Where are u"));
+
+	std::ostringstream location;
+	location << position.x << " " << position.y << " " << getFront().asString();
+
+	client.dispatchMessage(Messaging::Message(Messaging::RobotLocationRequest, location.str()));
 }
 
 void Robot::updateOtherRobot(std::string otherMsgBody) {
