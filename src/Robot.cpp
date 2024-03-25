@@ -645,7 +645,7 @@ void Robot::updateOtherRobot(std::string otherMsgBody) {
 bool Robot::otherRobotOnPath(unsigned short pathPoint) {
 	RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot(
 			"Peanut");
-	for (unsigned short vertexNr = pathPoint; vertexNr < pathPoint + 20;
+	for (unsigned short vertexNr = pathPoint; vertexNr < pathPoint + 100;
 			vertexNr++) {
 
 		if (Utils::Shape2DUtils::intersect(butterTheSecond->getFrontLeft(),
@@ -654,9 +654,6 @@ bool Robot::otherRobotOnPath(unsigned short pathPoint) {
 				wxPoint(path[vertexNr + 1].x, path[vertexNr + 1].y))) {
 			return true;
 		}
-		std::ostringstream os;
-		os << path[vertexNr].x << " " << path[vertexNr].y;
-		Application::Logger::log(os.str());
 	}
 
 	return false;
