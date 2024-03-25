@@ -475,9 +475,14 @@ void Robot::drive() {
 									+ std::string(": fuck you in ma way"));
 					driving = false;
 					signed short x = static_cast<signed short>(position.x
-							+ 10 * front.y);
-					signed short y = static_cast<signed short>(position.y
-							+ 0 * front.x);
+							+ 10 * (front.y / speed));
+					signed short y = static_cast<signed short>(position.y);
+
+					std::ostringstream os;
+
+					os <<  front.x << " " << front.y;
+
+					Application::Logger::log(os.str());
 
 					if (!getOutOfMyWayPoint) {
 						Model::RobotWorld::getRobotWorld().newWayPoint("WP",
