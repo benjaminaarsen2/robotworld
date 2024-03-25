@@ -495,8 +495,8 @@ namespace Model
 
 					Model::RobotWorld::getRobotWorld().newWayPoint(
 						"getOutTheWayPoint",
-						wxPoint(position.x + 50 * front.y,
-								position.y + 10 * front.x));
+						wxPoint(position.x + 100 * front.y,
+								position.y + 0 * front.x));
 
 					calculateRoute(Model::RobotWorld::getRobotWorld().getWayPoint("getOutTheWayPoint"));
 					pathPoint = 0;
