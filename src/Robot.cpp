@@ -410,22 +410,7 @@ namespace Model
 			}
 			case Messaging::RobotLocationResponse:
 			{
-				std::stringstream is(aMessage.getBody());
-				signed short x, y, bvx, bvy;
-				is >> x >> y >> bvx >> bvy;
-
-				RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("Peanut");
-				if(!butterTheSecond) {
-					Model::RobotWorld::getRobotWorld().newRobot("Peanut", wxPoint(x, y));
-					butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("Peanut");
-				}
-
-				butterTheSecond->setPosition(wxPoint(x, y));
-
-				BoundedVector b(bvx, bvy);
-				butterTheSecond->setFront(b);
-
-				Application::Logger::log(aMessage.getBody());
+				this->updateOtherRobot(aMessage.getBody());
 				break;
 			}
 			default:
@@ -616,6 +601,26 @@ void Robot::askForLocation() {
 	Application::Logger::log(os.str());
 	Messaging::Client client(remoteIpAdres, static_cast<unsigned short>(std::stoi(remotePort)), robot);
 	client.dispatchMessage(Messaging::Message(Messaging::RobotLocationRequest, "Where are u"));
+}
+
+void Robot::updateOtherRobot(std::string otherMsgBody) {
+	std::stringstream is(otherMsgBody);
+	signed short x, y, bvx, bvy;
+	is >> x >> y >> bvx >> bvy;
+
+	RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot(
+			"Peanut");
+	if (!butterTheSecond) {
+		Model::RobotWorld::getRobotWorld().newRobot("Peanut", wxPoint(x, y));
+		butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("Peanut");
+	}
+
+	butterTheSecond->setPosition(wxPoint(x, y));
+
+	BoundedVector b(bvx, bvy);
+	butterTheSecond->setFront(b);
+
+	Application::Logger::log(aMessage.getBody());
 }
 
 } // namespace Model

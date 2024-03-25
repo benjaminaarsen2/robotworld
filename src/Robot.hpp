@@ -328,6 +328,7 @@ namespace Model
 			Messaging::ServerPtr server;
 
 			void askForLocation();
+			void updateOtherRobot(std::string otherMsgBody);
 	};
 } // namespace Model
 #endif // ROBOT_HPP_
