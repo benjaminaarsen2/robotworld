@@ -317,6 +317,10 @@ namespace Model
 			/**
 			 *
 			 */
+			bool merged;
+			/**
+			 *
+			 */
 			std::thread robotThread;
 			/**
 			 *

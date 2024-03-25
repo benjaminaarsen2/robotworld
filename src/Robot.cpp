@@ -45,7 +45,8 @@ namespace Model
 								speed( 0.0),
 								acting(false),
 								driving(false),
-								communicating(false)
+								communicating(false),
+								merged(false)
 	{
 		// We use the real position for starters, not an estimated position.
 		startPosition = position;
@@ -364,11 +365,16 @@ namespace Model
 			{
 				aMessage.setMessageType(Messaging::MergeResponse);
 				aMessage.setBody( "Let's do some merging: " + aMessage.asString());
+				merged = true;
 				RobotWorld::getRobotWorld().merge();
 				break;
 			}
 			case Messaging::RobotLocationRequest:
 			{
+				if(merged) {
+					this->updateOtherRobot(aMessage.getBody());
+				}
+
 				aMessage.setMessageType(Messaging::RobotLocationResponse);
 
 				std::ostringstream os;
@@ -404,13 +410,15 @@ namespace Model
 			case Messaging::MergeResponse:
 			{
 				Application::Logger::log("fuck it we merge");
-
+				merged = true;
 				this->askForLocation();
 				break;
 			}
 			case Messaging::RobotLocationResponse:
 			{
-				this->updateOtherRobot(aMessage.getBody());
+				if(merged) {
+					this->updateOtherRobot(aMessage.getBody());
+				}
 				break;
 			}
 			default:
@@ -477,7 +485,9 @@ namespace Model
 				os << " and at y: " << position.y;
 
 				Application::Logger::log(os.str());
-				this->askForLocation();
+				if(merged) {
+					this->askForLocation();
+				}
 				// Stop on arrival or collision
 				if (arrived(goal))
 				{
