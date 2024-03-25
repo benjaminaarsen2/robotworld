@@ -475,7 +475,7 @@ void Robot::drive() {
 									+ std::string(": fuck you in ma way"));
 					driving = false;
 					signed short x = static_cast<signed short>(position.x
-							+ 40 * front.y);
+							+ 10 * front.y);
 					signed short y = static_cast<signed short>(position.y
 							+ 0 * front.x);
 
@@ -507,9 +507,10 @@ void Robot::drive() {
 								+ std::string(": arrived at waypoint"));
 				driving = false;
 
-				Model::RobotWorld::getRobotWorld().deleteWayPoint(getOutOfMyWayPoint);
+				Model::RobotWorld::getRobotWorld().deleteWayPoint(
+						getOutOfMyWayPoint);
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
-				if(!goal) {
+				if (!goal) {
 					goal = Model::RobotWorld::getRobotWorld().getGoal("Goal");
 				}
 				calculateRoute(goal);
@@ -687,18 +688,32 @@ bool Robot::otherRobotOnPath(unsigned short pathPoint) {
 	}
 	for (unsigned short vertexNr = pathPoint; vertexNr < pathPoint + 200;
 			vertexNr++) {
-		if(vertexNr + 1 >= path.size()) {
+		if (vertexNr + 1 >= path.size()) {
 			return false;
 		}
 
 		if (Utils::Shape2DUtils::intersect(butterTheSecond->getFrontLeft(),
 				butterTheSecond->getFrontRight(),
 				wxPoint(path[vertexNr].x, path[vertexNr].y),
-				wxPoint(path[vertexNr + 1].x, path[vertexNr + 1].y))) {
+				wxPoint(path[vertexNr + 1].x, path[vertexNr + 1].y))
+				|| Utils::Shape2DUtils::intersect(
+						butterTheSecond->getFrontLeft(),
+						butterTheSecond->getBackLeft(),
+						wxPoint(path[vertexNr].x, path[vertexNr].y),
+						wxPoint(path[vertexNr + 1].x, path[vertexNr + 1].y))
+				|| Utils::Shape2DUtils::intersect(
+						butterTheSecond->getFrontRight()(),
+						butterTheSecond->getBackRight(),
+						wxPoint(path[vertexNr].x, path[vertexNr].y),
+						wxPoint(path[vertexNr + 1].x, path[vertexNr + 1].y))
+				|| Utils::Shape2DUtils::intersect(
+						butterTheSecond->getBackLeft(),
+						butterTheSecond->getBackRight(),
+						wxPoint(path[vertexNr].x, path[vertexNr].y),
+						wxPoint(path[vertexNr + 1].x, path[vertexNr + 1].y))) {
 			return true;
 		}
 	}
-
 	return false;
 }
 
