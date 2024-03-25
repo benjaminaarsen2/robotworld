@@ -459,7 +459,7 @@ void Robot::drive() {
 			position.x = vertex.x;
 			position.y = vertex.y;
 			std::ostringstream os;
-			os << "butter is at x: " << position.x;
+			os << this->name << " is at x: " << position.x;
 			os << " and at y: " << position.y;
 
 			Application::Logger::log(os.str());
