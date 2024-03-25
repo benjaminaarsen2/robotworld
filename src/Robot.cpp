@@ -505,13 +505,18 @@ namespace Model
 				}
 
 				// Stop on arrival or collision
-				if (arrived(goal))
-				{
-					Application::Logger::log(__PRETTY_FUNCTION__ + std::string(": arrived"));
+				if (arrived(goal)) {
+					Application::Logger::log(
+							__PRETTY_FUNCTION__ + std::string(": arrived"));
 					driving = false;
-				} else if (arrived(Model::RobotWorld::getRobotWorld().getWayPoint("getOutTheWayPoint")))
-				{
-					Application::Logger::log(__PRETTY_FUNCTION__ + std::string(": arrived at waypoint"));
+				} else if (Model::RobotWorld::getRobotWorld().getWayPoint(
+						"getOutTheWayPoint")
+						&& arrived(
+								Model::RobotWorld::getRobotWorld().getWayPoint(
+										"getOutTheWayPoint"))) {
+					Application::Logger::log(
+							__PRETTY_FUNCTION__
+									+ std::string(": arrived at waypoint"));
 					driving = false;
 
 					calculateRoute(goal);
@@ -519,7 +524,9 @@ namespace Model
 
 					driving = true;
 				} else if (collision()) {
-					Application::Logger::log(__PRETTY_FUNCTION__ + std::string(": Robot has fucking died"));
+					Application::Logger::log(
+							__PRETTY_FUNCTION__
+									+ std::string(": Robot has fucking died"));
 					driving = false;
 				}
 
