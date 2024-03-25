@@ -474,11 +474,12 @@ void Robot::drive() {
 							__PRETTY_FUNCTION__
 									+ std::string(": fuck you in ma way"));
 					driving = false;
+					signed short x = 0;
 					if(speed != 0) {
-						signed short x = static_cast<signed short>(position.x
+						x = static_cast<signed short>(position.x
 								+ 10 * (front.y / speed));
 					} else {
-						signed short x = static_cast<signed short>(position.x
+						x = static_cast<signed short>(position.x
 														+ 10);
 					}
 					signed short y = static_cast<signed short>(position.y);
