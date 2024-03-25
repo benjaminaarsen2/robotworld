@@ -746,6 +746,7 @@ void MainFrameWindow::OnSendMessage(wxCommandEvent&UNUSEDPARAM(anEvent)) {
 		Messaging::Client c1ient(remoteIpAdres,
 				static_cast<unsigned short>(std::stoi(remotePort)), robot);
 		Messaging::Message message(Messaging::EchoRequest, "Hello world!");
+		Logger::log("Sending message to " + remoteIpAdres + ":" + remotePort);
 		c1ient.dispatchMessage(message);
 	}
 }
