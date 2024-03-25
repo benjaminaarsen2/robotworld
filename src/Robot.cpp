@@ -508,7 +508,9 @@ void Robot::drive() {
 				driving = false;
 
 				Model::RobotWorld::getRobotWorld().deleteWayPoint(getOutOfMyWayPoint);
-
+				if(!goal) {
+					goal = Model::RobotWorld::getRobotWorld().getGoal("Goal");
+				}
 				calculateRoute(goal);
 				pathPoint = 0;
 
