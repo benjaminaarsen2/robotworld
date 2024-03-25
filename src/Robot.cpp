@@ -15,6 +15,7 @@
 #include "WayPoint.hpp"
 
 #include <chrono>
+#include <cmath>
 #include <ctime>
 #include <sstream>
 #include <thread>
@@ -491,18 +492,18 @@ namespace Model
 				if(this->otherRobotOnPath(pathPoint)) {
 					Application::Logger::log(__PRETTY_FUNCTION__ + std::string(": fuck you in ma way"));
 					driving = false;
+				signed short x = static_cast<signed short>(position.x + 40 * front.y);
+				signed short y = static_cast<signed short>(position.y + 0 * front.x);
 
 				if (!Model::RobotWorld::getRobotWorld().getWayPoint(
 						"WP")) {
 					Model::RobotWorld::getRobotWorld().newWayPoint(
 							"WP",
-							wxPoint(position.x + 40 * front.y,
-									position.y + 0 * front.x));
+							wxPoint(x, y));
 				} else {
 					Model::RobotWorld::getRobotWorld().getWayPoint(
 							"WP")->setPosition(
-							wxPoint(position.x + 40 * front.y,
-									position.y + 0 * front.x));
+							wxPoint(x, y));
 				}
 
 
