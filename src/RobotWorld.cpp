@@ -244,7 +244,9 @@ const std::vector<WallPtr>& RobotWorld::getWalls() const {
  *
  */
 void RobotWorld::populate(unsigned short worldNumber) {
-	Application::Logger::log("Robots vector size: " + robots.size());
+	std::ostringstream os;
+	os << "Robots vector size: " << robots.size();
+	Application::Logger::log(os.str());
 	switch (worldNumber) {
 	case 0:
 		generateWorld1();
