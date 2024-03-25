@@ -361,7 +361,7 @@ void Robot::handleRequest(Messaging::Message &aMessage) {
 		aMessage.setMessageType(Messaging::RobotLocationResponse);
 
 		std::ostringstream os;
-		os << position.x << " " << position.y << " " << getFront().asString();
+		os << "Sending my location to other robot: " << position.x << " " << position.y << " " << getFront().asString();
 		aMessage.setBody(os.str());
 		break;
 	}
@@ -653,7 +653,6 @@ void Robot::askForLocation() {
 	if (Application::MainApplication::isArgGiven("-remote_ip")) {
 		remoteIpAdres =
 				Application::MainApplication::getArg("-remote_ip").value;
-		Application::Logger::log("oi");
 	}
 	if (Application::MainApplication::isArgGiven("-remote_port")) {
 		remotePort = Application::MainApplication::getArg("-remote_port").value;
@@ -687,8 +686,9 @@ void Robot::updateOtherRobot(std::string otherMsgBody) {
 
 	BoundedVector b(bvx, bvy);
 	butterTheSecond->setFront(b);
-
-	Application::Logger::log(otherMsgBody);
+	std::ostringstream os; 
+	os << butterTheSecond->name << " location data: " << otherMsgBody;
+	Application::Logger::log(os.str());
 }
 
 bool Robot::otherRobotOnPath(unsigned short pathPoint) {
