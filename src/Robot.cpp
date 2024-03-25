@@ -682,9 +682,12 @@ bool Robot::otherRobotOnPath(unsigned short pathPoint) {
 	if (!butterTheSecond) {
 		return false;
 	}
+	if(path.size() - pathPoint <= 10) {
+		return false;
+	}
 	for (unsigned short vertexNr = pathPoint; vertexNr < pathPoint + 100;
 			vertexNr++) {
-		if(vertexNr - 1 >= path.size()) {
+		if(vertexNr >= path.size()) {
 			return false;
 		}
 
