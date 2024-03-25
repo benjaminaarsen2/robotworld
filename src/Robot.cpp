@@ -702,7 +702,7 @@ bool Robot::otherRobotOnPath(unsigned short pathPoint) {
 						wxPoint(path[vertexNr].x, path[vertexNr].y),
 						wxPoint(path[vertexNr + 1].x, path[vertexNr + 1].y))
 				|| Utils::Shape2DUtils::intersect(
-						butterTheSecond->getFrontRight()(),
+						butterTheSecond->getFrontRight(),
 						butterTheSecond->getBackRight(),
 						wxPoint(path[vertexNr].x, path[vertexNr].y),
 						wxPoint(path[vertexNr + 1].x, path[vertexNr + 1].y))
