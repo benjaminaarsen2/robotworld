@@ -472,11 +472,11 @@ namespace Model
 			// We use the real position for starters, not an estimated position.
 			startPosition = position;
 
-			unsigned pathPoint = 0;
+			unsigned short pathPoint = 0;
 			while (position.x > 0 && position.x < 500 && position.y > 0 && position.y < 500 && pathPoint < path.size()) // @suppress("Avoid magic numbers")
 			{
 				// Do the update
-				const PathAlgorithm::Vertex& vertex = path[pathPoint+=static_cast<unsigned int>(speed)];
+				const PathAlgorithm::Vertex& vertex = path[pathPoint+=static_cast<unsigned short>(speed)];
 				front = BoundedVector( vertex.asPoint(), position);
 				position.x = vertex.x;
 				position.y = vertex.y;
@@ -488,6 +488,11 @@ namespace Model
 				if(merged) {
 					this->askForLocation();
 				}
+				if(this->otherRobotOnPath(pathPoint)) {
+					Application::Logger::log(__PRETTY_FUNCTION__ + std::string(": fuck you in ma way"));
+					driving = false;
+				}
+
 				// Stop on arrival or collision
 				if (arrived(goal))
 				{
@@ -635,6 +640,26 @@ void Robot::updateOtherRobot(std::string otherMsgBody) {
 	butterTheSecond->setFront(b);
 
 	Application::Logger::log(otherMsgBody);
+}
+
+bool Robot::otherRobotOnPath(unsigned short pathPoint) {
+	RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot(
+			"Peanut");
+	for (unsigned short vertexNr = pathPoint; vertexNr < pathPoint + 20;
+			vertexNr++) {
+
+		if (Utils::Shape2DUtils::intersect(butterTheSecond->getFrontLeft(),
+				butterTheSecond->getFrontRight(),
+				wxPoint(path[vertexNr].x, path[vertexNr].y),
+				wxPoint(path[vertexNr + 1].x, path[vertexNr + 1].y))) {
+			return true;
+		}
+		std::ostringstream os;
+		os << path[vertexNr].x << " " << path[vertexNr].y;
+		Application::Logger::log(os.str());
+	}
+
+	return false;
 }
 
 } // namespace Model
