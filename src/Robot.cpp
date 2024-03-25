@@ -703,6 +703,9 @@ void Robot::updateOtherRobot(std::string otherMsgBody) {
 bool Robot::otherRobotOnPath(unsigned short pathPoint) {
 	RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot(
 			"Peanut");
+	if(!butterTheSecond) {
+		return false;
+	}
 	for (unsigned short vertexNr = pathPoint; vertexNr < pathPoint + 100;
 			vertexNr++) {
 
