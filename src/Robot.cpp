@@ -495,7 +495,7 @@ namespace Model
 
 					Model::RobotWorld::getRobotWorld().newWayPoint(
 						"getOutTheWayPoint",
-						wxPoint(position.x + 100 * front.y,
+						wxPoint(position.x + 40 * front.y,
 								position.y + 0 * front.x));
 
 					calculateRoute(Model::RobotWorld::getRobotWorld().getWayPoint("getOutTheWayPoint"));
@@ -515,6 +515,7 @@ namespace Model
 					driving = false;
 
 					calculateRoute(goal);
+					pathPoint = 0;
 
 					driving = true;
 				} else if (collision()) {
