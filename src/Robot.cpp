@@ -492,11 +492,19 @@ namespace Model
 					Application::Logger::log(__PRETTY_FUNCTION__ + std::string(": fuck you in ma way"));
 					driving = false;
 
-
+				if (!Model::RobotWorld::getRobotWorld().getWayPoint(
+						"getOutTheWayPoint")) {
 					Model::RobotWorld::getRobotWorld().newWayPoint(
-						"getOutTheWayPoint",
-						wxPoint(position.x + 40 * front.y,
-								position.y + 0 * front.x));
+							"getOutTheWayPoint",
+							wxPoint(position.x + 40 * front.y,
+									position.y + 0 * front.x));
+				} else {
+					Model::RobotWorld::getRobotWorld().getWayPoint(
+							"getOutTheWayPoint")->setPosition(
+							wxPoint(position.x + 40 * front.y,
+									position.y + 0 * front.x));
+				}
+
 
 					calculateRoute(Model::RobotWorld::getRobotWorld().getWayPoint("getOutTheWayPoint"));
 					pathPoint = 0;
