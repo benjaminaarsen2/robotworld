@@ -479,24 +479,26 @@ void Robot::drive() {
 								__PRETTY_FUNCTION__
 										+ std::string(": wall is to close"));
 						while (pathPoint != 0) {
-											const PathAlgorithm::Vertex &vertex = path[pathPoint -=
-													static_cast<unsigned short>(speed)];
-											front = BoundedVector(vertex.asPoint(), position);
-											position.x = vertex.x;
-											position.y = vertex.y;
-											Application::Logger::log(
-													__PRETTY_FUNCTION__
-															+ std::string(": backtracking"));
-											notifyObservers();
+							const PathAlgorithm::Vertex &vertex =
+									path[pathPoint -=
+											static_cast<unsigned short>(speed)];
+							front = BoundedVector(vertex.asPoint(), position);
+							position.x = vertex.x;
+							position.y = vertex.y;
+							Application::Logger::log(
+									__PRETTY_FUNCTION__
+											+ std::string(": backtracking"));
+							notifyObservers();
 
-											// If there is no sleep_for here the robot will immediately be on its destination....
-											std::this_thread::sleep_for(std::chrono::milliseconds(100)); // @suppress("Avoid magic numbers")
+							// If there is no sleep_for here the robot will immediately be on its destination....
+							std::this_thread::sleep_for(
+									std::chrono::milliseconds(100)); // @suppress("Avoid magic numbers")
 
-											// this should be the last thing in the loop
-											if (driving == false) {
-												break;
-											}
-										}
+							// this should be the last thing in the loop
+							if (driving == false) {
+								break;
+							}
+						}
 
 					}
 					Application::Logger::log(
@@ -767,8 +769,14 @@ bool Robot::toCloseToWall() {
 	for (WallPtr wall : Walls) {
 		if (Utils::Shape2DUtils::isOnLine(wall->getPoint1(), wall->getPoint2(),
 				getFrontLeft(),
-				static_cast<int>(Utils::Shape2DUtils::distance(
-						wall->getPoint1(), wall->getPoint2())))) {
+				static_cast<int>(Utils::Shape2DUtils::distance(getFrontLeft(),
+						getFrontRight())))) {
+			return true;
+		}
+		if (Utils::Shape2DUtils::isOnLine(wall->getPoint1(), wall->getPoint2(),
+				getFrontRight(),
+				static_cast<int>(Utils::Shape2DUtils::distance(getFrontLeft(),
+						getFrontRight())))) {
 			return true;
 		}
 	}
