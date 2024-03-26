@@ -190,7 +190,8 @@ void Robot::startCommunicating() {
 void Robot::stopCommunicating() {
 	if (communicating) {
 		communicating = false;
-		Messaging::CommunicationService::getCommunicationService().deregisterServer(server);
+		Messaging::CommunicationService::getCommunicationService().deregisterServer(
+				server);
 		std::string localPort = "12345";
 		if (Application::MainApplication::isArgGiven("-local_port")) {
 			localPort =
@@ -363,7 +364,8 @@ void Robot::handleRequest(Messaging::Message &aMessage) {
 		aMessage.setMessageType(Messaging::RobotLocationResponse);
 
 		std::ostringstream os;
-		os << "Sending my location to other robot: " << position.x << " " << position.y << " " << getFront().asString();
+		os << "Sending my location to other robot: " << position.x << " "
+				<< position.y << " " << getFront().asString();
 		aMessage.setBody(os.str());
 		break;
 	}
@@ -472,23 +474,27 @@ void Robot::drive() {
 			if (merged) {
 				this->askForLocation();
 				if (this->otherRobotOnPath(pathPoint)) {
+					if(toCloseToWall()) {
+						Application::Logger::log(
+										__PRETTY_FUNCTION__ + std::string(": wall is to close"));
+
+					}
 					Application::Logger::log(
 							__PRETTY_FUNCTION__
 									+ std::string(": fuck you in ma way"));
 					driving = false;
 					signed short x = 0;
-					if(speed != 0) {
+					if (speed != 0) {
 						x = static_cast<signed short>(position.x
 								+ 100 * (front.y / speed));
 					} else {
-						x = static_cast<signed short>(position.x
-														+ 100);
+						x = static_cast<signed short>(position.x + 10);
 					}
 					signed short y = static_cast<signed short>(position.y);
 
 					std::ostringstream os;
 
-					os <<  front.x << " " << front.y;
+					os << front.x << " " << front.y;
 
 					Application::Logger::log(os.str());
 
@@ -513,6 +519,25 @@ void Robot::drive() {
 			if (arrived(goal)) {
 				Application::Logger::log(
 						__PRETTY_FUNCTION__ + std::string(": arrived"));
+				while (pathPoint != 0) {
+					const PathAlgorithm::Vertex &vertex = path[pathPoint -=
+							static_cast<unsigned short>(speed)];
+					front = BoundedVector(vertex.asPoint(), position);
+					position.x = vertex.x;
+					position.y = vertex.y;
+					Application::Logger::log(
+							__PRETTY_FUNCTION__
+									+ std::string(": backtracking"));
+					notifyObservers();
+
+					// If there is no sleep_for here the robot will immediately be on its destination....
+					std::this_thread::sleep_for(std::chrono::milliseconds(100)); // @suppress("Avoid magic numbers")
+
+					// this should be the last thing in the loop
+					if (driving == false) {
+						break;
+					}
+				}
 				driving = false;
 			} else if (getOutOfMyWayPoint && arrived(getOutOfMyWayPoint)) {
 				Application::Logger::log(
@@ -688,7 +713,7 @@ void Robot::updateOtherRobot(std::string otherMsgBody) {
 
 	BoundedVector b(bvx, bvy);
 	butterTheSecond->setFront(b);
-	std::ostringstream os; 
+	std::ostringstream os;
 	os << butterTheSecond->name << " location data: " << otherMsgBody;
 	Application::Logger::log(os.str());
 }
@@ -724,6 +749,25 @@ bool Robot::otherRobotOnPath(unsigned short pathPoint) {
 						butterTheSecond->getBackRight(),
 						wxPoint(path[vertexNr].x, path[vertexNr].y),
 						wxPoint(path[vertexNr + 1].x, path[vertexNr + 1].y))) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Robot::toCloseToWall() {
+
+	RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot(
+			"Peanut");
+	if (!butterTheSecond) {
+		return false;
+	}
+	std::vector<WallPtr> Walls = Model::RobotWorld::getRobotWorld().getWalls();
+	for (WallPtr wall : Walls) {
+		if (Utils::Shape2DUtils::isOnLine(wall->getPoint1(), wall->getPoint2(),
+				getFrontLeft(),
+				static_cast<int>(Utils::Shape2DUtils::distance(
+						wall->getPoint1(), wall->getPoint2())))) {
 			return true;
 		}
 	}
