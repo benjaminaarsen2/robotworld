@@ -3,7 +3,7 @@
 #include "RobotWorld.hpp"
 #include "Shape2DUtils.hpp"
 #include "Wall.hpp"
-
+#include "Robot.hpp"
 #include <algorithm>
 #include <cmath>
 #include <iterator>
@@ -58,6 +58,7 @@ namespace PathAlgorithm
 		static const int yOffset[] = { 1, 1, 0, -1, -1, -1, 0, 1 };
 
 		const std::vector< Model::WallPtr >& walls = Model::RobotWorld::getRobotWorld().getWalls();
+		const std::vector< Model::RobotPtr>& robots = Model::RobotWorld::getRobotWorld().getRobots();
 		std::vector< Vertex > neighbours;
 
 		for (int i = 0; i < 8; ++i)
@@ -69,6 +70,17 @@ namespace PathAlgorithm
 			{
 				if (Utils::Shape2DUtils::isOnLine( wall->getPoint1(), wall->getPoint2(), vertex.asPoint(), aFreeRadius))
 				{
+					addToNeigbours = false;
+					break;
+				}
+			}
+
+			for (Model::RobotPtr robot : robots) {
+				if (robot->getName() == "Butter") continue;
+				if (Utils::Shape2DUtils::isOnLine( robot->getFrontLeft(), robot->getFrontRight(), vertex.asPoint(), aFreeRadius) ||
+				  Utils::Shape2DUtils::isOnLine( robot->getFrontLeft(), robot->getBackLeft(), vertex.asPoint(), aFreeRadius) ||
+				  Utils::Shape2DUtils::isOnLine( robot->getFrontRight(), robot->getBackRight(), vertex.asPoint(), aFreeRadius) ||
+				  Utils::Shape2DUtils::isOnLine( robot->getBackLeft(), robot->getBackRight(), vertex.asPoint(), aFreeRadius) ){
 					addToNeigbours = false;
 					break;
 				}
