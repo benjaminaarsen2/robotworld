@@ -339,6 +339,8 @@ namespace Model
 			void updateOtherRobot(std::string otherMsgBody);
 			bool otherRobotOnPath(unsigned short pathPoint);
 			bool otherRobotWithinRadius(unsigned short radius);
+
+			bool toCloseToWall();
 	};
 } // namespace Model
 #endif // ROBOT_HPP_
