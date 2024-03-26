@@ -474,9 +474,29 @@ void Robot::drive() {
 			if (merged) {
 				this->askForLocation();
 				if (this->otherRobotOnPath(pathPoint)) {
-					if(toCloseToWall()) {
+					if (toCloseToWall()) {
 						Application::Logger::log(
-										__PRETTY_FUNCTION__ + std::string(": wall is to close"));
+								__PRETTY_FUNCTION__
+										+ std::string(": wall is to close"));
+						while (pathPoint != 0) {
+											const PathAlgorithm::Vertex &vertex = path[pathPoint -=
+													static_cast<unsigned short>(speed)];
+											front = BoundedVector(vertex.asPoint(), position);
+											position.x = vertex.x;
+											position.y = vertex.y;
+											Application::Logger::log(
+													__PRETTY_FUNCTION__
+															+ std::string(": backtracking"));
+											notifyObservers();
+
+											// If there is no sleep_for here the robot will immediately be on its destination....
+											std::this_thread::sleep_for(std::chrono::milliseconds(100)); // @suppress("Avoid magic numbers")
+
+											// this should be the last thing in the loop
+											if (driving == false) {
+												break;
+											}
+										}
 
 					}
 					Application::Logger::log(
@@ -519,25 +539,6 @@ void Robot::drive() {
 			if (arrived(goal)) {
 				Application::Logger::log(
 						__PRETTY_FUNCTION__ + std::string(": arrived"));
-				while (pathPoint != 0) {
-					const PathAlgorithm::Vertex &vertex = path[pathPoint -=
-							static_cast<unsigned short>(speed)];
-					front = BoundedVector(vertex.asPoint(), position);
-					position.x = vertex.x;
-					position.y = vertex.y;
-					Application::Logger::log(
-							__PRETTY_FUNCTION__
-									+ std::string(": backtracking"));
-					notifyObservers();
-
-					// If there is no sleep_for here the robot will immediately be on its destination....
-					std::this_thread::sleep_for(std::chrono::milliseconds(100)); // @suppress("Avoid magic numbers")
-
-					// this should be the last thing in the loop
-					if (driving == false) {
-						break;
-					}
-				}
 				driving = false;
 			} else if (getOutOfMyWayPoint && arrived(getOutOfMyWayPoint)) {
 				Application::Logger::log(
