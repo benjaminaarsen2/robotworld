@@ -471,7 +471,7 @@ void Robot::drive() {
 
 			if (merged) {
 				this->askForLocation();
-				if (this->otherRobotOnPath(pathPoint)) {
+				if (this->otherRobotOnPath(pathPoint) || this->otherRobotWithinRadius(this->size.GetWidth())) {
 					Application::Logger::log(
 							__PRETTY_FUNCTION__
 									+ std::string(": fuck you in ma way"));
@@ -691,6 +691,15 @@ void Robot::updateOtherRobot(std::string otherMsgBody) {
 	std::ostringstream os; 
 	os << butterTheSecond->name << " location data: " << otherMsgBody;
 	Application::Logger::log(os.str());
+}
+
+// checks whether the remote robot is within given radius. Used for checking an imminent colission
+bool Robot::otherRobotWithinRadius(unsigned short radius) {
+	RobotPtr butterTheSecond = Mode::RobotWorld::getRobotWorld().getRobot("Peanut");
+
+	if (!butterTheSecond) return false;
+
+	Utils::Shape2DUtils::distance(this->position, butterTheSecond->getPosition()) < radius;
 }
 
 bool Robot::otherRobotOnPath(unsigned short pathPoint) {
