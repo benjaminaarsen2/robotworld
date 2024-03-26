@@ -723,7 +723,7 @@ void Robot::updateOtherRobot(std::string otherMsgBody) {
 
 // checks whether the remote robot is within given radius. Used for checking an imminent colission
 bool Robot::otherRobotWithinRadius(unsigned short radius) {
-	RobotPtr butterTheSecond = Mode::RobotWorld::getRobotWorld().getRobot("Peanut");
+	RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("Peanut");
 
 	if (!butterTheSecond) return false;
 
