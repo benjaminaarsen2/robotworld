@@ -502,14 +502,18 @@ void Robot::drive() {
 						wxPoint(600, 600));
 		bool goingToWayPoint = false;
 
+		// 1 or -1
+		signed char direction = 1;
+
 		unsigned short pathPoint = 0;
 		while (position.x > 0 && position.x < 500 && position.y > 0
 				&& position.y < 500 && pathPoint < path.size()) // @suppress("Avoid magic numbers")
 		{
 			// Do the update
 			const PathAlgorithm::Vertex &vertex = path[pathPoint +=
-					static_cast<unsigned short>(speed)];
+					static_cast<unsigned short>(speed * direction)];
 			front = BoundedVector(vertex.asPoint(), position);
+			direction = 1;
 			position.x = vertex.x;
 			position.y = vertex.y;
 			std::ostringstream os;
@@ -526,13 +530,7 @@ void Robot::drive() {
 									+ std::string(": fuck you in ma way"));
 					if (this->toCloseToWall()) {
 						if (this->robotType == SLAVE) {
-							const PathAlgorithm::Vertex &vertex =
-									path[pathPoint -=
-											(static_cast<unsigned short>(speed)
-													* 2)];
-							front = BoundedVector(vertex.asPoint(), position);
-							position.x = vertex.x;
-							position.y = vertex.y;
+							direction = -1;
 						}
 					} else {
 						driving = false;
