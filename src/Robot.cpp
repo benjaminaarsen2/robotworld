@@ -509,8 +509,8 @@ void Robot::drive() {
 					RobotPtr bts = Model::RobotWorld::getRobotWorld().getRobot("Peanut");
 					signed long xDiff = this->position.x - bts->getPosition().x;
 					signed long yDiff = this->position.y - bts->getPosition().y;
-					signed long x = this->getPosition().x - xDiff;
-					signed long y = this->getPosition().y - yDiff;
+					signed long x = this->getPosition().x + xDiff;
+					signed long y = this->getPosition().y + yDiff;
 
 					std::ostringstream os;
 
