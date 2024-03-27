@@ -469,24 +469,24 @@ void Robot::drive() {
 
 			if (merged) {
 				this->askForLocation();
-				if (this->otherRobotOnPath(pathPoint) || this->otherRobotWithinRadius(100)) {
+				if (this->otherRobotOnPath(pathPoint)
+						|| this->otherRobotWithinRadius(60)) {
 					Application::Logger::log(
 							__PRETTY_FUNCTION__
 									+ std::string(": fuck you in ma way"));
 					driving = false;
 					signed short x = 0;
-					if(speed != 0) {
+					if (speed != 0) {
 						x = static_cast<signed short>(position.x
 								+ 50 * (front.y / speed));
 					} else {
-						x = static_cast<signed short>(position.x
-														+ 50);
+						x = static_cast<signed short>(position.x + 50);
 					}
 					signed short y = static_cast<signed short>(position.y);
 
 					std::ostringstream os;
 
-					os <<  front.x << " " << front.y;
+					os << front.x << " " << front.y;
 
 					Application::Logger::log(os.str());
 
@@ -501,7 +501,6 @@ void Robot::drive() {
 					}
 					pathPoint = 0;
 					calculateRoute(getOutOfMyWayPoint);
-
 
 					driving = true;
 				}
@@ -525,14 +524,13 @@ void Robot::drive() {
 					goal = Model::RobotWorld::getRobotWorld().getGoal("Goal");
 				}
 				Application::Logger::log(
-										__PRETTY_FUNCTION__
-												+ std::string(": calculating route"));
+						__PRETTY_FUNCTION__
+								+ std::string(": calculating route"));
 				pathPoint = 0;
 				calculateRoute(goal);
 				Application::Logger::log(
-										__PRETTY_FUNCTION__
-												+ std::string(": calculated route"));
-
+						__PRETTY_FUNCTION__
+								+ std::string(": calculated route"));
 
 				driving = true;
 			} else if (collision()) {
@@ -680,11 +678,16 @@ void Robot::askForLocation() {
 
 // checks whether the remote robot is within given radius. Used for checking an imminent colission
 bool Robot::otherRobotWithinRadius(signed long radius) {
-	RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("Peanut");
+	RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot(
+			"Peanut");
 
-	if (!butterTheSecond) return false;
+	if (!butterTheSecond)
+		return false;
 
-	return Utils::Shape2DUtils::distance(this->position, butterTheSecond->getPosition()) < radius;
+	return Utils::Shape2DUtils::distance(this->getFrontLeft(),
+			butterTheSecond->getPosition()) < radius
+			|| Utils::Shape2DUtils::distance(this->getFrontRight(),
+					butterTheSecond->getPosition()) < radius;
 }
 
 void Robot::updateOtherRobot(std::string otherMsgBody) {
