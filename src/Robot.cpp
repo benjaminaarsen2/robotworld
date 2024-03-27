@@ -23,8 +23,6 @@
 #include <string>
 #include <iostream>
 
-
-
 namespace Model {
 /**
  *
@@ -372,9 +370,9 @@ void Robot::handleRequest(Messaging::Message &aMessage) {
 	}
 	case Messaging::OtherRobotOnPathRequest: {
 #ifdef __MINGW32__
-	static int seed =
-			std::chrono::system_clock::now().time_since_epoch().count(); // lokale instantieoverkoepelende variabelen
-	static std::mt19937 gen(seed);
+		static int seed =
+				std::chrono::system_clock::now().time_since_epoch().count(); // lokale instantieoverkoepelende variabelen
+		static std::mt19937 gen(seed);
 
 #else
 	static std::random_device rd;
@@ -382,7 +380,7 @@ void Robot::handleRequest(Messaging::Message &aMessage) {
 
 #endif
 
-	static std::uniform_int_distribution<unsigned short> dis(1, 10);
+		static std::uniform_int_distribution<unsigned short> dis(1, 10);
 
 		unsigned short rand = dis(gen);
 		myRand = rand;
@@ -390,9 +388,7 @@ void Robot::handleRequest(Messaging::Message &aMessage) {
 		aMessage.setMessageType(Messaging::OtherRobotOnPathResponse);
 		std::ostringstream os;
 		os << rand;
-		Application::Logger::log(
-								__PRETTY_FUNCTION__
-										+ std::string(os.str()));
+		Application::Logger::log(__PRETTY_FUNCTION__ + std::string(os.str()));
 		aMessage.setBody(os.str());
 		break;
 	}
@@ -431,9 +427,8 @@ void Robot::handleResponse(const Messaging::Message &aMessage) {
 	}
 	case Messaging::OtherRobotOnPathResponse: {
 		Application::Logger::log(
-								__PRETTY_FUNCTION__
-										+ std::string(aMessage.getBody()));
-		if (myRand > std::stoi( aMessage.getBody())) {
+				__PRETTY_FUNCTION__ + std::string(aMessage.getBody()));
+		if (myRand > std::stoi(aMessage.getBody())) {
 			break;
 		} else if (myRand == std::stoi(aMessage.getBody())) {
 			randomCollision();
@@ -494,7 +489,8 @@ void Robot::drive() {
 		startPosition = position;
 
 		WayPointPtr getOutOfMyWayPoint =
-							Model::RobotWorld::getRobotWorld().newWayPoint("WP", wxPoint(600, 600));
+				Model::RobotWorld::getRobotWorld().newWayPoint("WP",
+						wxPoint(600, 600));
 		bool goingToWayPoint = false;
 
 		unsigned short pathPoint = 0;
@@ -544,20 +540,19 @@ void Robot::drive() {
 					Application::Logger::log(
 							__PRETTY_FUNCTION__
 									+ std::string(": fuck you in ma way"));
-
-					randomCollision();
-
-					if(waitingForOther) {
-						std::this_thread::sleep_for(std::chrono::milliseconds(10000));
-						waitingForOther = false;
+					std::string type;
+					if (Application::MainApplication::isArgGiven(
+							"-type")) {
+						type = Application::MainApplication::getArg(
+								"-type").value;
+					}
+					if(type == "slave") {
+						Application::Logger::log("Oh no I am subserviant and must wait");
+						std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+					} else {
+						Application::Logger::log("I am a master and will do whatever i want");
 					}
 
-					std::ostringstream os;
-
-					os << front.x << " " << front.y;
-
-					Application::Logger::log(os.str());
-					driving = true;
 				}
 			}
 
@@ -800,33 +795,32 @@ bool Robot::otherRobotOnPath(unsigned short pathPoint) {
 
 void Robot::randomCollision() {
 	Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot(
-				"Butter");
+			"Butter");
 
-		if (!robot) {
-			return;
-		}
+	if (!robot) {
+		return;
+	}
 
-		std::ostringstream os;
-		os << __PRETTY_FUNCTION__ << " asking for location" << std::endl;
+	std::ostringstream os;
+	os << __PRETTY_FUNCTION__ << " asking for location" << std::endl;
 
-		std::string remoteIpAdres = "localhost";
-		std::string remotePort = "12345";
+	std::string remoteIpAdres = "localhost";
+	std::string remotePort = "12345";
 
-		if (Application::MainApplication::isArgGiven("-remote_ip")) {
-			remoteIpAdres =
-					Application::MainApplication::getArg("-remote_ip").value;
-		}
-		if (Application::MainApplication::isArgGiven("-remote_port")) {
-			remotePort = Application::MainApplication::getArg("-remote_port").value;
-		}
+	if (Application::MainApplication::isArgGiven("-remote_ip")) {
+		remoteIpAdres =
+				Application::MainApplication::getArg("-remote_ip").value;
+	}
+	if (Application::MainApplication::isArgGiven("-remote_port")) {
+		remotePort = Application::MainApplication::getArg("-remote_port").value;
+	}
 
-		Application::Logger::log(os.str());
-		Messaging::Client client(remoteIpAdres,
-				static_cast<unsigned short>(std::stoi(remotePort)), robot);
+	Application::Logger::log(os.str());
+	Messaging::Client client(remoteIpAdres,
+			static_cast<unsigned short>(std::stoi(remotePort)), robot);
 
-
-		client.dispatchMessage(
-				Messaging::Message(Messaging::OtherRobotOnPathRequest));
+	client.dispatchMessage(
+			Messaging::Message(Messaging::OtherRobotOnPathRequest));
 }
 
 } // namespace Model
