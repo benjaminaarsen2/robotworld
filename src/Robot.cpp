@@ -511,6 +511,9 @@ void Robot::drive() {
 		{
 			// Do the update
 			pathPoint += static_cast<unsigned short>(speed * direction);
+			if(pathPoint < 0 || pathPoint > path.size()) {
+				pathPoint = 0;
+			}
 
 			const PathAlgorithm::Vertex &vertex = path[pathPoint];
 			front = BoundedVector(vertex.asPoint(), position);
