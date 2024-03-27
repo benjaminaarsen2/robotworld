@@ -516,7 +516,7 @@ void Robot::drive() {
 					signed short x = 0;
 					if (speed != 0) {
 						x = static_cast<signed short>(position.x
-								+ 50 * (front.y / speed));
+								+ 80 * (front.y / speed));
 					} else {
 						x = static_cast<signed short>(position.x + 80);
 					}
