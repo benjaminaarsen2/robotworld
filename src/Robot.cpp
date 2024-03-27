@@ -419,7 +419,7 @@ void Robot::handleResponse(const Messaging::Message &aMessage) {
 		break;
 	}
 	case Messaging::MergeResponse: {
-		if(!merged) {
+		if (!merged) {
 			Application::Logger::log("fuck it we merge");
 			merged = true;
 			robotType = MASTER;
@@ -524,27 +524,39 @@ void Robot::drive() {
 					Application::Logger::log(
 							__PRETTY_FUNCTION__
 									+ std::string(": fuck you in ma way"));
-					driving = false;
-					signed short x = 0;
-					if (speed != 0) {
-						x = static_cast<signed short>(position.x
-								+ 80 * (front.y / speed));
+					if (this->toCloseToWall()) {
+						if (this->robotType == SLAVE) {
+							const PathAlgorithm::Vertex &vertex =
+									path[pathPoint -=
+											(static_cast<unsigned short>(speed)
+													* 2)];
+							front = BoundedVector(vertex.asPoint(), position);
+							position.x = vertex.x;
+							position.y = vertex.y;
+						}
 					} else {
-						x = static_cast<signed short>(position.x + 80);
+						driving = false;
+						signed short x = 0;
+						if (speed != 0) {
+							x = static_cast<signed short>(position.x
+									+ 80 * (front.y / speed));
+						} else {
+							x = static_cast<signed short>(position.x + 80);
+						}
+						signed short y = static_cast<signed short>(position.y);
+
+						std::ostringstream os;
+
+						os << front.x << " " << front.y;
+
+						getOutOfMyWayPoint->setPosition(wxPoint(x, y));
+
+						pathPoint = 0;
+						calculateRoute(getOutOfMyWayPoint);
+						goingToWayPoint = true;
+
+						driving = true;
 					}
-					signed short y = static_cast<signed short>(position.y);
-
-					std::ostringstream os;
-
-					os << front.x << " " << front.y;
-
-					getOutOfMyWayPoint->setPosition(wxPoint(x, y));
-
-					pathPoint = 0;
-					calculateRoute(getOutOfMyWayPoint);
-					goingToWayPoint = true;
-
-					driving = true;
 				} else if (this->otherRobotWithinRadius(60)) {
 					Application::Logger::log(
 							__PRETTY_FUNCTION__
@@ -827,6 +839,31 @@ void Robot::randomCollision() {
 
 	client.dispatchMessage(
 			Messaging::Message(Messaging::OtherRobotOnPathRequest));
+}
+
+bool Robot::toCloseToWall() {
+
+	RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot(
+			"Peanut");
+	if (!butterTheSecond) {
+		return false;
+	}
+	std::vector<WallPtr> Walls = Model::RobotWorld::getRobotWorld().getWalls();
+	for (WallPtr wall : Walls) {
+		if (Utils::Shape2DUtils::isOnLine(wall->getPoint1(), wall->getPoint2(),
+				getFrontLeft(),
+				static_cast<int>(Utils::Shape2DUtils::distance(getFrontLeft(),
+						getFrontRight())))) {
+			return true;
+		}
+		if (Utils::Shape2DUtils::isOnLine(wall->getPoint1(), wall->getPoint2(),
+				getFrontRight(),
+				static_cast<int>(Utils::Shape2DUtils::distance(getFrontLeft(),
+						getFrontRight())))) {
+			return true;
+		}
+	}
+	return false;
 }
 
 bool Robot::getMerged() {

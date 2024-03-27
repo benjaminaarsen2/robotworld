@@ -346,6 +346,7 @@ namespace Model
 			unsigned short myRand;
 			bool waitingForOther;
 			void randomCollision();
+			bool toCloseToWall();
 
 			enum RobotType {
 				MASTER,
