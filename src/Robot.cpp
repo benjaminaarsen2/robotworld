@@ -475,17 +475,18 @@ void Robot::drive() {
 									+ std::string(": fuck you in ma way"));
 					driving = false;
 					signed short x = 0;
-					if (speed != 0) {
+					if(speed != 0) {
 						x = static_cast<signed short>(position.x
 								+ 50 * (front.y / speed));
 					} else {
-						x = static_cast<signed short>(position.x + 50);
+						x = static_cast<signed short>(position.x
+														+ 50);
 					}
 					signed short y = static_cast<signed short>(position.y);
 
 					std::ostringstream os;
 
-					os << front.x << " " << front.y;
+					os <<  front.x << " " << front.y;
 
 					Application::Logger::log(os.str());
 
@@ -516,7 +517,6 @@ void Robot::drive() {
 						__PRETTY_FUNCTION__
 								+ std::string(": arrived at waypoint"));
 				driving = false;
-				std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
 				Model::RobotWorld::getRobotWorld().deleteWayPoint(
 						getOutOfMyWayPoint);
@@ -524,13 +524,14 @@ void Robot::drive() {
 				if (!goal) {
 					goal = Model::RobotWorld::getRobotWorld().getGoal("Goal");
 				}
-				std::this_thread::sleep_for(std::chrono::milliseconds(10));
-
+				Application::Logger::log(
+										__PRETTY_FUNCTION__
+												+ std::string(": calculating route"));
 				calculateRoute(goal);
-				std::this_thread::sleep_for(std::chrono::milliseconds(10));
-
+				Application::Logger::log(
+										__PRETTY_FUNCTION__
+												+ std::string(": calculated route"));
 				pathPoint = 0;
-				std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
 				driving = true;
 			} else if (collision()) {
