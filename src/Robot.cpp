@@ -588,6 +588,7 @@ void Robot::drive() {
 						__PRETTY_FUNCTION__
 								+ std::string(": calculating route"));
 				pathPoint = 0;
+                direction = 1;
 				goingToWayPoint = false;
 				getOutOfMyWayPoint->setPosition(wxPoint(600, 600));
 				calculateRoute(goal);
