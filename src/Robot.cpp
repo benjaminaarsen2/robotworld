@@ -469,8 +469,7 @@ void Robot::drive() {
 
 			if (merged) {
 				this->askForLocation();
-				if (this->otherRobotOnPath(pathPoint)
-						|| this->otherRobotWithinRadius(60)) {
+				if (this->otherRobotOnPath(pathPoint)) {
 					Application::Logger::log(
 							__PRETTY_FUNCTION__
 									+ std::string(": fuck you in ma way"));
@@ -480,7 +479,7 @@ void Robot::drive() {
 						x = static_cast<signed short>(position.x
 								+ 50 * (front.y / speed));
 					} else {
-						x = static_cast<signed short>(position.x + 50);
+						x = static_cast<signed short>(position.x + 80);
 					}
 					signed short y = static_cast<signed short>(position.y);
 
@@ -503,6 +502,11 @@ void Robot::drive() {
 					calculateRoute(getOutOfMyWayPoint);
 
 					driving = true;
+				} else if (this->otherRobotWithinRadius(60)) {
+					Application::Logger::log(
+							__PRETTY_FUNCTION__
+									+ std::string(": fuck you in ma way"));
+					std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 				}
 			}
 
