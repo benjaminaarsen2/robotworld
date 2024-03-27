@@ -477,10 +477,10 @@ void Robot::drive() {
 					signed short x = 0;
 					if(speed != 0) {
 						x = static_cast<signed short>(position.x
-								+ 10 * (front.y / speed));
+								+ 50 * (front.y / speed));
 					} else {
 						x = static_cast<signed short>(position.x
-														+ 10);
+														+ 50);
 					}
 					signed short y = static_cast<signed short>(position.y);
 
@@ -699,7 +699,7 @@ bool Robot::otherRobotOnPath(unsigned short pathPoint) {
 	}
 	for (unsigned short vertexNr = pathPoint; vertexNr < pathPoint + 200;
 			vertexNr++) {
-		if (vertexNr + 1 >= path.size()) {
+		if (static_cast<unsigned long long>(vertexNr) + 1 >= path.size()) {
 			return false;
 		}
 
