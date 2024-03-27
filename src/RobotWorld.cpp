@@ -430,10 +430,10 @@ void RobotWorld::generateWorld8() {
 	RobotWorld::getRobotWorld().newWall(wxPoint(0, 500), wxPoint(500, 500),
 			false); // @suppress("Avoid magic numbers")
 
-	RobotWorld::getRobotWorld().newWall(wxPoint(0, 225), wxPoint(400, 225),
+	RobotWorld::getRobotWorld().newWall(wxPoint(0, 220), wxPoint(400, 220),
 			false); // @suppress("Avoid magic numbers")
 
-	RobotWorld::getRobotWorld().newWall(wxPoint(500, 275), wxPoint(100, 275),
+	RobotWorld::getRobotWorld().newWall(wxPoint(500, 280), wxPoint(100, 280),
 			false); // @suppress("Avoid magic numbers")
 
 	RobotWorld::getRobotWorld().newGoal("Goal", wxPoint(460, 460), false); // @suppress("Avoid magic numbers")
