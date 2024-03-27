@@ -386,9 +386,13 @@ void Robot::handleRequest(Messaging::Message &aMessage) {
 
 		unsigned short rand = dis(gen);
 		myRand = rand;
+
 		aMessage.setMessageType(Messaging::OtherRobotOnPathResponse);
 		std::ostringstream os;
 		os << rand;
+		Application::Logger::log(
+								__PRETTY_FUNCTION__
+										+ std::string(os.str()));
 		aMessage.setBody(os.str());
 		break;
 	}
@@ -426,6 +430,9 @@ void Robot::handleResponse(const Messaging::Message &aMessage) {
 		break;
 	}
 	case Messaging::OtherRobotOnPathResponse: {
+		Application::Logger::log(
+								__PRETTY_FUNCTION__
+										+ std::string(aMessage.getBody()));
 		if (myRand > std::stoi( aMessage.getBody())) {
 			break;
 		} else if (myRand == std::stoi(aMessage.getBody())) {
