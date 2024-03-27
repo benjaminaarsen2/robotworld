@@ -815,7 +815,6 @@ void Robot::randomCollision() {
 		if (Application::MainApplication::isArgGiven("-remote_ip")) {
 			remoteIpAdres =
 					Application::MainApplication::getArg("-remote_ip").value;
-			Application::Logger::log("oi");
 		}
 		if (Application::MainApplication::isArgGiven("-remote_port")) {
 			remotePort = Application::MainApplication::getArg("-remote_port").value;
