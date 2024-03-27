@@ -697,6 +697,10 @@ void MainFrameWindow::OnSyncWorlds(wxCommandEvent&UNUSEDPARAM(anEvent)) {
         return;
     }
 
+    if(robot->getMerged()) {
+    	return;
+    }
+
 	std::ostringstream os;
 	os << __PRETTY_FUNCTION__ << " syncing worlds" << std::endl;
     std::string remoteIpAdres = "localhost";

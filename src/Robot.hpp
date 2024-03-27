@@ -171,6 +171,8 @@ namespace Model
 			 *
 			 */
 			bool intersects( const wxRegion& aRegion) const;
+
+			bool getMerged();
 			/**
 			 *
 			 */
@@ -344,6 +346,12 @@ namespace Model
 			unsigned short myRand;
 			bool waitingForOther;
 			void randomCollision();
+
+			enum RobotType {
+				MASTER,
+				SLAVE,
+				NONE
+			} robotType;
 	};
 } // namespace Model
 #endif // ROBOT_HPP_

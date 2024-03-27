@@ -42,7 +42,7 @@ Robot::Robot(const std::string &aName) :
 Robot::Robot(const std::string &aName, const wxPoint &aPosition) :
 		name(aName), size(wxDefaultSize), position(aPosition), front(0, 0), speed(
 				0.0), acting(false), driving(false), communicating(false), merged(
-				false) {
+				false), robotType(NONE) {
 	// We use the real position for starters, not an estimated position.
 	startPosition = position;
 }
@@ -350,10 +350,15 @@ void Robot::handleRequest(Messaging::Message &aMessage) {
 		break;
 	}
 	case Messaging::MergeRequest: {
-		aMessage.setMessageType(Messaging::MergeResponse);
-		aMessage.setBody("Let's do some merging: " + aMessage.asString());
-		merged = true;
-		RobotWorld::getRobotWorld().merge();
+		if (!merged) {
+			aMessage.setMessageType(Messaging::MergeResponse);
+			aMessage.setBody("Let's do some merging: " + aMessage.asString());
+			merged = true;
+			robotType = SLAVE;
+			Application::Logger::log("I will be the stupid fucking slave");
+
+			RobotWorld::getRobotWorld().merge();
+		}
 		break;
 	}
 	case Messaging::RobotLocationRequest: {
@@ -414,9 +419,13 @@ void Robot::handleResponse(const Messaging::Message &aMessage) {
 		break;
 	}
 	case Messaging::MergeResponse: {
-		Application::Logger::log("fuck it we merge");
-		merged = true;
-		this->askForLocation();
+		if(!merged) {
+			Application::Logger::log("fuck it we merge");
+			merged = true;
+			robotType = MASTER;
+			Application::Logger::log("I am the superior master");
+			this->askForLocation();
+		}
 		break;
 	}
 	case Messaging::RobotLocationResponse: {
@@ -540,17 +549,15 @@ void Robot::drive() {
 					Application::Logger::log(
 							__PRETTY_FUNCTION__
 									+ std::string(": fuck you in ma way"));
-					std::string type;
-					if (Application::MainApplication::isArgGiven(
-							"-type")) {
-						type = Application::MainApplication::getArg(
-								"-type").value;
-					}
-					if(type == "slave") {
-						Application::Logger::log("Oh no I am subserviant and must wait");
-						std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+
+					if (robotType == SLAVE) {
+						Application::Logger::log(
+								"Oh no I am subserviant and must wait");
+						std::this_thread::sleep_for(
+								std::chrono::milliseconds(2000));
 					} else {
-						Application::Logger::log("I am a master and will do whatever i want");
+						Application::Logger::log(
+								"I am a master and will do whatever i want");
 					}
 
 				}
@@ -704,7 +711,6 @@ void Robot::askForLocation() {
 	if (Application::MainApplication::isArgGiven("-remote_ip")) {
 		remoteIpAdres =
 				Application::MainApplication::getArg("-remote_ip").value;
-		Application::Logger::log("oi");
 	}
 	if (Application::MainApplication::isArgGiven("-remote_port")) {
 		remotePort = Application::MainApplication::getArg("-remote_port").value;
@@ -821,6 +827,10 @@ void Robot::randomCollision() {
 
 	client.dispatchMessage(
 			Messaging::Message(Messaging::OtherRobotOnPathRequest));
+}
+
+bool Robot::getMerged() {
+	return this->merged;
 }
 
 } // namespace Model
