@@ -486,6 +486,10 @@ void Robot::drive() {
 		// We use the real position for starters, not an estimated position.
 		startPosition = position;
 
+		WayPointPtr getOutOfMyWayPoint =
+							Model::RobotWorld::getRobotWorld().newWayPoint("WP", wxPoint(600, 600));
+		bool goingToWayPoint = false;
+
 		unsigned short pathPoint = 0;
 		while (position.x > 0 && position.x < 500 && position.y > 0
 				&& position.y < 500 && pathPoint < path.size()) // @suppress("Avoid magic numbers")
@@ -501,9 +505,6 @@ void Robot::drive() {
 			os << " and at y: " << position.y;
 
 			Application::Logger::log(os.str());
-
-			WayPointPtr getOutOfMyWayPoint =
-					Model::RobotWorld::getRobotWorld().getWayPoint("WP");
 
 			if (merged) {
 				this->askForLocation();
@@ -525,19 +526,11 @@ void Robot::drive() {
 
 					os << front.x << " " << front.y;
 
-					Application::Logger::log(os.str());
+					getOutOfMyWayPoint->setPosition(wxPoint(x, y));
 
-					if (!getOutOfMyWayPoint) {
-						Model::RobotWorld::getRobotWorld().newWayPoint("WP",
-								wxPoint(x, y));
-						getOutOfMyWayPoint =
-								Model::RobotWorld::getRobotWorld().getWayPoint(
-										"WP");
-					} else {
-						getOutOfMyWayPoint->setPosition(wxPoint(x, y));
-					}
 					pathPoint = 0;
 					calculateRoute(getOutOfMyWayPoint);
+					goingToWayPoint = true;
 
 					driving = true;
 				} else if (this->otherRobotWithinRadius(60)) {
@@ -548,32 +541,15 @@ void Robot::drive() {
 					randomCollision();
 
 					if(waitingForOther) {
-						std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+						std::this_thread::sleep_for(std::chrono::milliseconds(10000));
 						waitingForOther = false;
 					}
-
-
 
 					std::ostringstream os;
 
 					os << front.x << " " << front.y;
 
 					Application::Logger::log(os.str());
-/*
-					if (!getOutOfMyWayPoint) {
-						Model::RobotWorld::getRobotWorld().newWayPoint("WP",
-								wxPoint(x, y));
-						getOutOfMyWayPoint =
-								Model::RobotWorld::getRobotWorld().getWayPoint(
-										"WP");
-					} else {
-						getOutOfMyWayPoint->setPosition(wxPoint(x, y));
-					}
-
-					pathPoint = 0;
-					calculateRoute(getOutOfMyWayPoint);
-					*/
-
 					driving = true;
 				}
 			}
@@ -583,22 +559,18 @@ void Robot::drive() {
 				Application::Logger::log(
 						__PRETTY_FUNCTION__ + std::string(": arrived"));
 				driving = false;
-			} else if (getOutOfMyWayPoint && arrived(getOutOfMyWayPoint)) {
+			} else if (goingToWayPoint && arrived(getOutOfMyWayPoint)) {
 				Application::Logger::log(
 						__PRETTY_FUNCTION__
 								+ std::string(": arrived at waypoint"));
 				driving = false;
 
-				Model::RobotWorld::getRobotWorld().deleteWayPoint(
-						getOutOfMyWayPoint);
-				std::this_thread::sleep_for(std::chrono::milliseconds(10));
-				if (!goal) {
-					goal = Model::RobotWorld::getRobotWorld().getGoal("Goal");
-				}
 				Application::Logger::log(
 						__PRETTY_FUNCTION__
 								+ std::string(": calculating route"));
 				pathPoint = 0;
+				goingToWayPoint = false;
+				getOutOfMyWayPoint->setPosition(wxPoint(600, 600));
 				calculateRoute(goal);
 				Application::Logger::log(
 						__PRETTY_FUNCTION__
