@@ -506,7 +506,31 @@ void Robot::drive() {
 					Application::Logger::log(
 							__PRETTY_FUNCTION__
 									+ std::string(": fuck you in ma way"));
-					std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+					RobotPtr bts = Model::RobotWorld::getRobotWorld().getRobot("Peanut");
+					signed long xDiff = this->position.x - bts->getPosition().x;
+					signed long yDiff = this->position.y - bts->getPosition().y;
+					signed long x = this->getPosition().x - xDiff;
+					signed long y = this->getPosition().y - yDiff;
+
+					std::ostringstream os;
+
+					os << front.x << " " << front.y;
+
+					Application::Logger::log(os.str());
+
+					if (!getOutOfMyWayPoint) {
+						Model::RobotWorld::getRobotWorld().newWayPoint("WP",
+								wxPoint(x, y));
+						getOutOfMyWayPoint =
+								Model::RobotWorld::getRobotWorld().getWayPoint(
+										"WP");
+					} else {
+						getOutOfMyWayPoint->setPosition(wxPoint(x, y));
+					}
+					pathPoint = 0;
+					calculateRoute(getOutOfMyWayPoint);
+
+					driving = true;
 				}
 			}
 
