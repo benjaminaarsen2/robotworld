@@ -499,9 +499,9 @@ void Robot::drive() {
 					} else {
 						getOutOfMyWayPoint->setPosition(wxPoint(x, y));
 					}
-
-					calculateRoute(getOutOfMyWayPoint);
 					pathPoint = 0;
+					calculateRoute(getOutOfMyWayPoint);
+
 
 					driving = true;
 				}
