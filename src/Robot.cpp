@@ -19,6 +19,11 @@
 #include <ctime>
 #include <sstream>
 #include <thread>
+#include <random>
+#include <string>
+#include <iostream>
+
+
 
 namespace Model {
 /**
@@ -365,6 +370,28 @@ void Robot::handleRequest(Messaging::Message &aMessage) {
 		aMessage.setBody(os.str());
 		break;
 	}
+	case Messaging::OtherRobotOnPathRequest: {
+#ifdef __MINGW32__
+	static int seed =
+			std::chrono::system_clock::now().time_since_epoch().count(); // lokale instantieoverkoepelende variabelen
+	static std::mt19937 gen(seed);
+
+#else
+	static std::random_device rd;
+	static std::mt19937 gen(rd());
+
+#endif
+
+	static std::uniform_int_distribution<unsigned short> dis(1, 10);
+
+		unsigned short rand = dis(gen);
+		myRand = rand;
+		aMessage.setMessageType(Messaging::OtherRobotOnPathResponse);
+		std::ostringstream os;
+		os << rand;
+		aMessage.setBody(os.str());
+		break;
+	}
 	default: {
 		TRACE_DEVELOP(
 				__PRETTY_FUNCTION__ + std::string(": default not implemented"));
@@ -395,6 +422,16 @@ void Robot::handleResponse(const Messaging::Message &aMessage) {
 	case Messaging::RobotLocationResponse: {
 		if (merged) {
 			this->updateOtherRobot(aMessage.getBody());
+		}
+		break;
+	}
+	case Messaging::OtherRobotOnPathResponse: {
+		if (myRand > std::stoi( aMessage.getBody())) {
+			break;
+		} else if (myRand == std::stoi(aMessage.getBody())) {
+			randomCollision();
+		} else {
+			waitingForOther = true;
 		}
 		break;
 	}
@@ -433,6 +470,7 @@ std::string Robot::asDebugString() const {
  */
 void Robot::drive() {
 	try {
+		waitingForOther = false;
 		// The runtime value always wins!!
 		speed =
 				static_cast<float>(Application::MainApplication::getSettings().getSpeed());
@@ -506,18 +544,22 @@ void Robot::drive() {
 					Application::Logger::log(
 							__PRETTY_FUNCTION__
 									+ std::string(": fuck you in ma way"));
-					RobotPtr bts = Model::RobotWorld::getRobotWorld().getRobot("Peanut");
-					signed long xDiff = this->position.x - bts->getPosition().x;
-					signed long yDiff = this->position.y - bts->getPosition().y;
-					signed long x = this->getPosition().x + xDiff;
-					signed long y = this->getPosition().y + yDiff;
+
+					randomCollision();
+
+					if(waitingForOther) {
+						std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+						waitingForOther = false;
+					}
+
+
 
 					std::ostringstream os;
 
 					os << front.x << " " << front.y;
 
 					Application::Logger::log(os.str());
-
+/*
 					if (!getOutOfMyWayPoint) {
 						Model::RobotWorld::getRobotWorld().newWayPoint("WP",
 								wxPoint(x, y));
@@ -527,8 +569,10 @@ void Robot::drive() {
 					} else {
 						getOutOfMyWayPoint->setPosition(wxPoint(x, y));
 					}
+
 					pathPoint = 0;
 					calculateRoute(getOutOfMyWayPoint);
+					*/
 
 					driving = true;
 				}
@@ -773,6 +817,38 @@ bool Robot::otherRobotOnPath(unsigned short pathPoint) {
 		}
 	}
 	return false;
+}
+
+void Robot::randomCollision() {
+	Model::RobotPtr robot = Model::RobotWorld::getRobotWorld().getRobot(
+				"Butter");
+
+		if (!robot) {
+			return;
+		}
+
+		std::ostringstream os;
+		os << __PRETTY_FUNCTION__ << " asking for location" << std::endl;
+
+		std::string remoteIpAdres = "localhost";
+		std::string remotePort = "12345";
+
+		if (Application::MainApplication::isArgGiven("-remote_ip")) {
+			remoteIpAdres =
+					Application::MainApplication::getArg("-remote_ip").value;
+			Application::Logger::log("oi");
+		}
+		if (Application::MainApplication::isArgGiven("-remote_port")) {
+			remotePort = Application::MainApplication::getArg("-remote_port").value;
+		}
+
+		Application::Logger::log(os.str());
+		Messaging::Client client(remoteIpAdres,
+				static_cast<unsigned short>(std::stoi(remotePort)), robot);
+
+
+		client.dispatchMessage(
+				Messaging::Message(Messaging::OtherRobotOnPathRequest));
 }
 
 } // namespace Model
