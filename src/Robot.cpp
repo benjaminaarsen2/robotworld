@@ -510,8 +510,9 @@ void Robot::drive() {
 				&& position.y < 500 && pathPoint < path.size()) // @suppress("Avoid magic numbers")
 		{
 			// Do the update
-			const PathAlgorithm::Vertex &vertex = path[pathPoint +=
-					static_cast<unsigned short>(speed * direction)];
+			pathPoint += static_cast<unsigned short>(speed * direction);
+
+			const PathAlgorithm::Vertex &vertex = path[pathPoint];
 			front = BoundedVector(vertex.asPoint(), position);
 			direction = 1;
 			position.x = vertex.x;
