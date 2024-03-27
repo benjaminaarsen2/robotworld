@@ -722,12 +722,12 @@ void Robot::updateOtherRobot(std::string otherMsgBody) {
 }
 
 // checks whether the remote robot is within given radius. Used for checking an imminent colission
-bool Robot::otherRobotWithinRadius(unsigned short radius) {
+bool Robot::otherRobotWithinRadius(signed long radius) {
 	RobotPtr butterTheSecond = Model::RobotWorld::getRobotWorld().getRobot("Peanut");
 
 	if (!butterTheSecond) return false;
 
-	Utils::Shape2DUtils::distance(this->position, butterTheSecond->getPosition()) < radius;
+	return Utils::Shape2DUtils::distance(this->position, butterTheSecond->getPosition()) < radius;
 }
 
 bool Robot::otherRobotOnPath(unsigned short pathPoint) {
@@ -738,7 +738,7 @@ bool Robot::otherRobotOnPath(unsigned short pathPoint) {
 	}
 	for (unsigned short vertexNr = pathPoint; vertexNr < pathPoint + 200;
 			vertexNr++) {
-		if (vertexNr + 1 >= path.size()) {
+		if (static_cast<unsigned long long>(vertexNr) + 1 >= path.size()) {
 			return false;
 		}
 

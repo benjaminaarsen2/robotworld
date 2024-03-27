@@ -338,7 +338,7 @@ namespace Model
 			void askForLocation();
 			void updateOtherRobot(std::string otherMsgBody);
 			bool otherRobotOnPath(unsigned short pathPoint);
-			bool otherRobotWithinRadius(unsigned short radius);
+			bool otherRobotWithinRadius(signed long radius);
 
 			bool toCloseToWall();
 	};
