@@ -510,8 +510,10 @@ void Robot::drive() {
 				&& position.y < 500 && pathPoint < path.size()) // @suppress("Avoid magic numbers")
 		{
 			// Do the update
+			Application::Logger::log("Before calc: " + pathPoint);
 			pathPoint += static_cast<unsigned short>(speed * direction);
-			if(pathPoint < 0 || pathPoint > path.size()) {
+			Application::Logger::log("After calc: " + pathPoint);
+			if(pathPoint < 0 || pathPoint >= path.size()) {
 				pathPoint = 0;
 			}
 
